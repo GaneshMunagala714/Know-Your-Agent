@@ -10,19 +10,19 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg:      #040d0e;
-  --s1:      #071416;
-  --s2:      #0a1a1c;
-  --b1:      #122428;
-  --b2:      #1c3840;
-  --red:     #06b6d4;
-  --red-d:   rgba(6,182,212,0.08);
-  --red-b:   rgba(6,182,212,0.2);
-  --green:   #06b6d4;
-  --green-d: rgba(6,182,212,0.08);
-  --white:   #f0f0f0;
-  --gray:    #6b9aa3;
-  --dim:     #2e5560;
+  --bg:      #ffffff;
+  --s1:      #f8fafc;
+  --s2:      #f1f5f9;
+  --b1:      #e2e8f0;
+  --b2:      #cbd5e1;
+  --red:     #1d4ed8;
+  --red-d:   rgba(29,78,216,0.06);
+  --red-b:   rgba(29,78,216,0.2);
+  --green:   #1d4ed8;
+  --green-d: rgba(29,78,216,0.06);
+  --white:   #0f172a;
+  --gray:    #475569;
+  --dim:     #94a3b8;
   --sans:    'Space Grotesk', sans-serif;
   --mono:    'JetBrains Mono', monospace;
 }
@@ -63,8 +63,8 @@ body {
 .left-bg {
   position: absolute; inset: 0; z-index: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(6,182,212,0.06) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(6,182,212,0.03) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(29,78,216,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(29,78,216,0.03) 0%, transparent 60%);
 }
 .grid-overlay {
   position: absolute; inset: 0; z-index: 0; opacity: .15;
@@ -139,7 +139,7 @@ body {
   font-family: var(--sans); font-size: 14px; font-weight: 600;
   cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s;
 }
-.btn-primary:hover:not(:disabled) { background: #c9313d; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(6,182,212,.22); }
+.btn-primary:hover:not(:disabled) { background: #c9313d; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(29,78,216,.22); }
 .btn-primary:disabled { opacity: .35; cursor: not-allowed; }
 .btn-primary .spin { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
 .btn-primary.loading .btn-txt { display: none; }
@@ -220,7 +220,7 @@ body {
       <div class="guarantees">
         <div class="guarantee">
           <div class="g-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round">
               <path d="M8 2 L13 4.5 V8.5 C13 11.2 10.8 13.7 8 14.5 C5.2 13.7 3 11.2 3 8.5 V4.5 Z"/>
               <path d="M6 8 L7.5 9.5 L10 6.5"/>
             </svg>
@@ -232,7 +232,7 @@ body {
         </div>
         <div class="guarantee">
           <div class="g-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round">
               <circle cx="8" cy="6" r="2.5"/>
               <path d="M3.5 13 C3.5 10.5 5.5 8.5 8 8.5 C10.5 8.5 12.5 10.5 12.5 13"/>
               <line x1="10.5" y1="2" x2="12.5" y2="4"/>
@@ -246,7 +246,7 @@ body {
         </div>
         <div class="guarantee">
           <div class="g-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round">
               <rect x="2" y="7" width="12" height="7" rx="1.5"/>
               <path d="M5 7 V5 C5 3.3 6.3 2 8 2 C9.7 2 11 3.3 11 5 V7"/>
               <circle cx="8" cy="10.5" r="1"/>

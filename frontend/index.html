@@ -10,34 +10,34 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:    #040d0e;
-  --s1:    #071416;
-  --card:  #0a1a1c;
-  --b1:    #122428;
-  --b2:    #1c3840;
-  --b3:    #264d58;
-  --green: #06b6d4;
-  --glow:  rgba(6,182,212,.08);
-  --gborder:rgba(6,182,212,.2);
-  --gt:    rgba(6,182,212,.1);
-  --text:  #ffffff;
-  --muted: #6b9aa3;
-  --dim:   #2e5560;
-  --red:   #f87171;
-  --yellow:#fbbf24;
+  --bg:    #ffffff;
+  --s1:    #f8fafc;
+  --card:  #f1f5f9;
+  --b1:    #e2e8f0;
+  --b2:    #cbd5e1;
+  --b3:    #94a3b8;
+  --green: #1d4ed8;
+  --glow:  rgba(29,78,216,.05);
+  --gborder:rgba(29,78,216,.25);
+  --gt:    rgba(29,78,216,.08);
+  --text:  #0f172a;
+  --muted: #475569;
+  --dim:   #94a3b8;
+  --red:   #dc2626;
+  --yellow:#d97706;
   --sans:  'Inter',system-ui,sans-serif;
   --mono:  'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% -5%,rgba(6,182,212,.07) 0%,transparent 65%);}
+.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(29,78,216,.04) 0%,transparent 60%);}
 .wrap{position:relative;z-index:1;}
 
 /* ── NAV ── */
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;border-bottom:1px solid var(--b1);position:sticky;top:0;background:rgba(7,13,9,.92);backdrop-filter:blur(16px);z-index:200;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;border-bottom:1px solid var(--b1);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);z-index:200;}
 .nav-brand{display:flex;align-items:center;gap:12px;}
 .nav-icon{width:32px;height:32px;border-radius:7px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.nav-icon svg{width:16px;height:16px;fill:#000;}
+.nav-icon svg{width:16px;height:16px;fill:#fff;}
 .nav-name{font-size:15px;font-weight:700;letter-spacing:.06em;}
 .nav-badge{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:4px;border:1px solid var(--gborder);color:var(--green);letter-spacing:.08em;}
 .nav-links{display:flex;align-items:center;gap:4px;}
@@ -50,13 +50,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px
 .hero{max-width:1100px;margin:0 auto;padding:88px 40px 72px;}
 .hero-status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--muted);padding:6px 14px;border:1px solid var(--b2);border-radius:100px;margin-bottom:36px;letter-spacing:.04em;}
 .hs-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:gp 2s ease-in-out infinite;flex-shrink:0;}
-@keyframes gp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(6,182,212,.5);}60%{opacity:.7;box-shadow:0 0 0 5px rgba(6,182,212,0);}}
+@keyframes gp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(29,78,216,.4);}60%{opacity:.7;box-shadow:0 0 0 6px rgba(29,78,216,0);}}
 .hero h1{font-size:clamp(52px,7vw,88px);font-weight:900;line-height:1.0;letter-spacing:-.03em;margin-bottom:28px;}
 .hero h1 .accent{color:var(--green);}
 .hero-desc{font-size:17px;color:var(--muted);line-height:1.75;max-width:620px;margin-bottom:44px;}
 .hero-ctas{display:flex;align-items:center;gap:12px;margin-bottom:64px;flex-wrap:wrap;}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#000;font-size:14px;font-weight:700;padding:13px 24px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;transition:background .15s,transform .12s;}
-.btn-primary:hover{background:#6ee79a;transform:translateY(-1px);}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-size:14px;font-weight:700;padding:13px 24px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;transition:background .15s,transform .12s;}
+.btn-primary:hover{background:#1e40af;transform:translateY(-1px);}
 .btn-primary:disabled{opacity:.3;cursor:not-allowed;transform:none;}
 .btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);font-family:var(--mono);font-size:12px;padding:13px 20px;border-radius:8px;border:1px solid var(--b2);text-decoration:none;cursor:pointer;transition:all .15s;}
 .btn-secondary:hover{color:var(--text);border-color:var(--b3);}
@@ -111,8 +111,8 @@ hr.div{border:none;border-top:1px solid var(--b1);}
 .form-note{font-size:11px;color:var(--dim);line-height:1.65;margin-bottom:14px;}
 .err{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;}
 .err.on{display:block;}
-.btn-submit{display:block;width:100%;background:var(--green);color:#000;border:none;border-radius:8px;padding:14px;font-size:14px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .15s,transform .12s;}
-.btn-submit:hover:not(:disabled){background:#6ee79a;transform:translateY(-1px);}
+.btn-submit{display:block;width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:14px;font-size:14px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .15s,transform .12s;}
+.btn-submit:hover:not(:disabled){background:#1e40af;transform:translateY(-1px);}
 .btn-submit:disabled{opacity:.25;cursor:not-allowed;transform:none;}
 
 /* ── TERMINAL PANEL ── */
@@ -123,7 +123,7 @@ hr.div{border:none;border-top:1px solid var(--b1);}
 .tb-title{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:8px;flex:1;}
 .tb-status{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--b1);color:var(--dim);}
 .tb-status.running{background:var(--gt);border-color:var(--gborder);color:var(--green);}
-.terminal,.term-idle{padding:20px;font-family:var(--mono);font-size:11.5px;line-height:1.9;color:var(--dim);background:#040a06;min-height:340px;max-height:560px;overflow-y:auto;}
+.terminal,.term-idle{padding:20px;font-family:var(--mono);font-size:11.5px;line-height:1.9;color:var(--dim);background:#010304;min-height:340px;max-height:560px;overflow-y:auto;}
 .terminal::-webkit-scrollbar{width:3px;}.terminal::-webkit-scrollbar-thumb{background:var(--b2);}
 .tl{display:block;}
 .tl-hdr{color:var(--green);font-weight:600;}
@@ -159,7 +159,7 @@ hr.div{border:none;border-top:1px solid var(--b1);}
 .mb-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .btn-reject{background:transparent;border:1px solid var(--b2);border-radius:7px;padding:11px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;}
 .btn-reject:hover{border-color:rgba(248,113,113,.4);color:var(--red);}
-.btn-approve{background:var(--green);border:none;border-radius:7px;padding:11px;font-size:13px;font-weight:700;color:#000;cursor:pointer;transition:background .15s;}
+.btn-approve{background:var(--green);border:none;border-radius:7px;padding:11px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:background .15s;}
 .btn-approve:hover{background:#6ee79a;}
 
 /* ── RESULT ── */
@@ -266,31 +266,31 @@ footer{border-top:1px solid var(--b1);margin-top:40px;}
   <div class="pipe-cards">
     <div class="pipe-card">
       <span class="pc-num">01</span>
-      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
       <div class="pc-title">Verification</div>
       <div class="pc-desc">Employee credentials validated inside enclave. Identity hash sealed.</div>
     </div>
     <div class="pipe-card">
       <span class="pc-num">02</span>
-      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/></svg></div>
+      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/></svg></div>
       <div class="pc-title">Intake Triage</div>
       <div class="pc-desc">Agent 1 classifies claim category, urgency, and jurisdiction.</div>
     </div>
     <div class="pipe-card">
       <span class="pc-num">03</span>
-      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg></div>
+      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg></div>
       <div class="pc-title">Specialist Analysis</div>
       <div class="pc-desc">Agent 2 routes by violation type for domain-specific scrutiny.</div>
     </div>
     <div class="pipe-card">
       <span class="pc-num">04</span>
-      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
       <div class="pc-title">Legal Assessment</div>
       <div class="pc-desc">Agent 3 maps applicable statutes, agencies, and protections.</div>
     </div>
     <div class="pipe-card">
       <span class="pc-num">05</span>
-      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="pc-title">Verdict &amp; Attestation</div>
       <div class="pc-desc">Agent 4 synthesizes verdict. Hash committed to Sepolia.</div>
     </div>
