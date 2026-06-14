@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a1f2e"/>
+      <stop offset="100%" stop-color="#0a0d14"/>
+    </radialGradient>
+    <radialGradient id="dropGrad" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ff8c42"/>
+      <stop offset="100%" stop-color="#e63946"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="dropClip">
+      <path d="M200 80 C200 80 120 170 120 230 C120 274 156 310 200 310 C244 310 280 274 280 230 C280 170 200 80 200 80 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="195" fill="url(#bgGrad)"/>
+  <circle cx="200" cy="200" r="193" fill="none" stroke="#e63946" stroke-width="2" opacity="0.4"/>
+
+  <!-- Outer ring dots (chain nodes) -->
+  <circle cx="200" cy="14"  r="5" fill="#e63946" opacity="0.7"/>
+  <circle cx="323" cy="77"  r="5" fill="#e63946" opacity="0.7"/>
+  <circle cx="370" cy="215" r="5" fill="#e63946" opacity="0.5"/>
+  <circle cx="308" cy="338" r="5" fill="#e63946" opacity="0.5"/>
+  <circle cx="92"  cy="338" r="5" fill="#e63946" opacity="0.5"/>
+  <circle cx="30"  cy="215" r="5" fill="#e63946" opacity="0.5"/>
+  <circle cx="77"  cy="77"  r="5" fill="#e63946" opacity="0.7"/>
+
+  <!-- Drop shape -->
+  <path d="M200 80 C200 80 118 172 118 232 C118 277 155 312 200 312 C245 312 282 277 282 232 C282 172 200 80 200 80 Z"
+        fill="url(#dropGrad)" filter="url(#glow)"/>
+
+  <!-- Lock body (inside drop) -->
+  <rect x="170" y="220" width="60" height="50" rx="8" fill="#0a0d14" opacity="0.9"/>
+
+  <!-- Lock shackle -->
+  <path d="M182 220 L182 202 C182 186 218 186 218 202 L218 220"
+        fill="none" stroke="#0a0d14" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Lock keyhole -->
+  <circle cx="200" cy="239" r="8" fill="#e63946"/>
+  <rect x="196" y="244" width="8" height="14" rx="3" fill="#e63946"/>
+
+  <!-- Slash line through the drop (identity unknowable) -->
+  <line x1="140" y1="300" x2="265" y2="130"
+        stroke="white" stroke-width="5" stroke-linecap="round"
+        opacity="0.25" clip-path="url(#dropClip)"/>
+
+  <!-- Bottom text -->
+  <text x="200" y="352" text-anchor="middle"
+        fill="white" font-family="'Courier New', monospace"
+        font-size="26" font-weight="bold" letter-spacing="10" opacity="0.95">
+    DEADDROP
+  </text>
+
+  <!-- Tagline -->
+  <text x="200" y="375" text-anchor="middle"
+        fill="#e63946" font-family="'Courier New', monospace"
+        font-size="11" letter-spacing="3" opacity="0.8">
+    IDENTITY: UNKNOWABLE
+  </text>
+</svg>
