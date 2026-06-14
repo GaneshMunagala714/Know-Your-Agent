@@ -15,11 +15,11 @@
   --s2:      #f1f5f9;
   --b1:      #e2e8f0;
   --b2:      #cbd5e1;
-  --red:     #1d4ed8;
-  --red-d:   rgba(29,78,216,0.06);
-  --red-b:   rgba(29,78,216,0.2);
-  --green:   #1d4ed8;
-  --green-d: rgba(29,78,216,0.06);
+  --red:     #dc2626;
+  --red-d:   rgba(220,38,38,0.06);
+  --red-b:   rgba(220,38,38,0.2);
+  --green:   #dc2626;
+  --green-d: rgba(220,38,38,0.06);
   --white:   #0f172a;
   --gray:    #475569;
   --dim:     #94a3b8;
@@ -29,7 +29,7 @@
 
 html, body { height: 100%; overflow: hidden; }
 body {
-  background: var(--bg); color: var(--white);
+  background: var(--bg); color: #0f172a;
   font-family: var(--sans); -webkit-font-smoothing: antialiased;
   display: flex; flex-direction: column;
 }
@@ -39,10 +39,10 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 48px; height: 56px; flex-shrink: 0;
   border-bottom: 1px solid var(--b1);
-  background: rgba(5,5,5,0.95);
+  background: rgba(255,255,255,0.95);
   position: relative; z-index: 10;
 }
-.logo { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #0f172a; }
 .logo-ring { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; }
 .logo-dot  { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.65);} }
@@ -63,8 +63,8 @@ body {
 .left-bg {
   position: absolute; inset: 0; z-index: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(29,78,216,0.05) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(29,78,216,0.03) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(220,38,38,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(220,38,38,0.03) 0%, transparent 60%);
 }
 .grid-overlay {
   position: absolute; inset: 0; z-index: 0; opacity: .15;
@@ -78,7 +78,7 @@ body {
 .left-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
 .eyebrow-line { width: 24px; height: 1px; background: var(--red); }
 .eyebrow-txt  { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--red); }
-.left-heading { font-size: clamp(36px, 4vw, 52px); font-weight: 700; letter-spacing: -.025em; line-height: 1.05; margin-bottom: 20px; }
+.left-heading { font-size: clamp(36px, 4vw, 52px); font-weight: 700; letter-spacing: -.025em; line-height: 1.05; margin-bottom: 20px; color: #0f172a; }
 .left-heading span { display: block; color: var(--gray); }
 .left-sub { font-size: 14px; color: var(--gray); line-height: 1.75; max-width: 380px; margin-bottom: 52px; }
 
@@ -87,8 +87,8 @@ body {
 .g-icon { width: 32px; height: 32px; border-radius: 6px; background: var(--red-d); border: 1px solid var(--red-b); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .g-icon svg { width: 14px; height: 14px; }
 .g-body {}
-.g-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-.g-desc  { font-size: 11px; color: var(--dim); line-height: 1.5; }
+.g-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; color: #0f172a; }
+.g-desc  { font-size: 11px; color: var(--gray); line-height: 1.5; }
 
 .left-footer { display: flex; align-items: center; gap: 10px; }
 .lf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
@@ -101,7 +101,7 @@ body {
 }
 .form-card { width: 100%; max-width: 380px; }
 .fc-head { margin-bottom: 36px; }
-.fc-head h2 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
+.fc-head h2 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; color: #0f172a; }
 .fc-head p  { font-size: 13px; color: var(--gray); line-height: 1.6; }
 
 /* ── TABS ── */
@@ -112,7 +112,7 @@ body {
   cursor: pointer; transition: background .18s, color .18s;
   color: var(--dim); border: 1px solid transparent; user-select: none;
 }
-.tab.active { background: var(--s2); color: var(--white); border-color: var(--b1); }
+.tab.active { background: var(--s2); color: #0f172a; border-color: var(--b1); }
 
 /* ── FORM ── */
 .field { margin-bottom: 16px; }
@@ -120,7 +120,7 @@ body {
 .field input {
   width: 100%; background: var(--bg); border: 1px solid var(--b1);
   border-radius: 6px; padding: 12px 14px;
-  color: var(--white); font-family: var(--sans); font-size: 14px;
+  color: #0f172a; font-family: var(--sans); font-size: 14px;
   outline: none; transition: border-color .2s, box-shadow .15s;
 }
 .field input:focus { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-d); }
@@ -139,7 +139,7 @@ body {
   font-family: var(--sans); font-size: 14px; font-weight: 600;
   cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s;
 }
-.btn-primary:hover:not(:disabled) { background: #c9313d; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(29,78,216,.22); }
+.btn-primary:hover:not(:disabled) { background: #c9313d; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(220,38,38,.22); }
 .btn-primary:disabled { opacity: .35; cursor: not-allowed; }
 .btn-primary .spin { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
 .btn-primary.loading .btn-txt { display: none; }
@@ -220,7 +220,7 @@ body {
       <div class="guarantees">
         <div class="guarantee">
           <div class="g-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round">
               <path d="M8 2 L13 4.5 V8.5 C13 11.2 10.8 13.7 8 14.5 C5.2 13.7 3 11.2 3 8.5 V4.5 Z"/>
               <path d="M6 8 L7.5 9.5 L10 6.5"/>
             </svg>
@@ -232,7 +232,7 @@ body {
         </div>
         <div class="guarantee">
           <div class="g-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round">
               <circle cx="8" cy="6" r="2.5"/>
               <path d="M3.5 13 C3.5 10.5 5.5 8.5 8 8.5 C10.5 8.5 12.5 10.5 12.5 13"/>
               <line x1="10.5" y1="2" x2="12.5" y2="4"/>
@@ -246,7 +246,7 @@ body {
         </div>
         <div class="guarantee">
           <div class="g-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round">
               <rect x="2" y="7" width="12" height="7" rx="1.5"/>
               <path d="M5 7 V5 C5 3.3 6.3 2 8 2 C9.7 2 11 3.3 11 5 V7"/>
               <circle cx="8" cy="10.5" r="1"/>
