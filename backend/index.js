@@ -99,7 +99,7 @@ async function callConfidentialAI(systemPrompt, userPrompt) {
 // ── AGENT 1: Intake Triage ────────────────────────────────────────────────────
 
 async function runIntakeAgent(claim, verification) {
-  console.log("[DeadDrop] AGENT 1: Intake Triage Agent running...");
+  console.log("[INCOGNITO] AGENT 1: Intake Triage Agent running...");
 
   const result = await callConfidentialAI(
     "You are an Intake Triage Agent for a whistleblower protection system. Categorize claims quickly and decide whether to proceed. Respond with valid JSON only.",
@@ -119,7 +119,7 @@ Severity: 1=minor, 2=serious, 3=critical. Only set proceed=false if clearly friv
   );
 
   if (result) {
-    console.log(`[DeadDrop] Agent 1 ✓ category=${result.category} proceed=${result.proceed}`);
+    console.log(`[INCOGNITO] Agent 1 ✓ category=${result.category} proceed=${result.proceed}`);
     return result;
   }
 
@@ -156,7 +156,7 @@ const SPECIALIST_PROMPTS = {
 };
 
 async function runSpecialistAgent(claim, evidenceSummary, verification, triage) {
-  console.log(`[DeadDrop] AGENT 2: ${triage.category} Specialist Agent running...`);
+  console.log(`[INCOGNITO] AGENT 2: ${triage.category} Specialist Agent running...`);
 
   const result = await callConfidentialAI(
     SPECIALIST_PROMPTS[triage.category] || SPECIALIST_PROMPTS.OTHER,
@@ -185,7 +185,7 @@ Output JSON only:
   );
 
   if (result) {
-    console.log(`[DeadDrop] Agent 2 ✓ evidence_quality=${result.evidence_quality}/10`);
+    console.log(`[INCOGNITO] Agent 2 ✓ evidence_quality=${result.evidence_quality}/10`);
     return result;
   }
 
@@ -202,7 +202,7 @@ Output JSON only:
 // ── AGENT 3: Legal Assessment Agent ──────────────────────────────────────────
 
 async function runLegalAgent(triage, analysis) {
-  console.log("[DeadDrop] AGENT 3: Legal Assessment Agent running...");
+  console.log("[INCOGNITO] AGENT 3: Legal Assessment Agent running...");
 
   const result = await callConfidentialAI(
     "You are a Legal Assessment Agent specializing in U.S. whistleblower law: Dodd-Frank 21F, SOX 806, OSHA 11(c), False Claims Act, and FCPA. Respond with valid JSON only.",
@@ -227,7 +227,7 @@ Output JSON only:
   );
 
   if (result) {
-    console.log(`[DeadDrop] Agent 3 ✓ protection=${result.protection_level} SEC_eligible=${result.sec_award_eligible}`);
+    console.log(`[INCOGNITO] Agent 3 ✓ protection=${result.protection_level} SEC_eligible=${result.sec_award_eligible}`);
     return result;
   }
 
@@ -247,7 +247,7 @@ Output JSON only:
 // ── AGENT 4: Final Verdict Synthesis ─────────────────────────────────────────
 
 async function runVerdictAgent(triage, analysis, legal) {
-  console.log("[DeadDrop] AGENT 4: Verdict Synthesis Agent running...");
+  console.log("[INCOGNITO] AGENT 4: Verdict Synthesis Agent running...");
 
   const result = await callConfidentialAI(
     "You are the Final Verdict Synthesis Agent. Synthesize 3 specialist agent reports into a final attested verdict. Identity is always UNKNOWABLE. Respond with valid JSON only.",
@@ -271,7 +271,7 @@ Output JSON only:
 
   if (result) {
     result.identity = "UNKNOWABLE"; // always enforce
-    console.log(`[DeadDrop] Agent 4 ✓ credible=${result.credible} severity=${result.severity} route=${result.route}`);
+    console.log(`[INCOGNITO] Agent 4 ✓ credible=${result.credible} severity=${result.severity} route=${result.route}`);
     return result;
   }
 
@@ -341,12 +341,12 @@ app.post("/submit", async (req, res) => {
     console.log("\n[INCOGNITO] ═══ New submission — Ledger verified · 4-agent pipeline starting ═══");
 
     // Step 0: Verify employee (identity stays confidential)
-    console.log("[DeadDrop] Step 0: Employee verification...");
+    console.log("[INCOGNITO] Step 0: Employee verification...");
     const verification = await verifyEmployee(employee_proof);
     if (!verification.verified) {
       return res.status(403).json({ error: "Employee verification failed" });
     }
-    console.log(`[DeadDrop] ✓ Verified: ${verification.role} / ${verification.dept}`);
+    console.log(`[INCOGNITO] ✓ Verified: ${verification.role} / ${verification.dept}`);
 
     // Agent 1: Intake triage
     const triage = await runIntakeAgent(claim, verification);
@@ -455,7 +455,7 @@ app.get("/attestations", async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log("DeadDrop backend running on http://localhost:3001");
+  console.log("INCOGNITO backend running on http://localhost:3001");
   console.log("4-agent agentic pipeline ready");
   console.log("Contract:", process.env.CONTRACT_ADDRESS || "not configured");
 });

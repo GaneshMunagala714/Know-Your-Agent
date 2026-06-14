@@ -144,7 +144,7 @@ const verifyEmployee = (runtime: Runtime<Config>): EmployeeVerification => {
 	const { config } = runtime
 	const http = new cre.capabilities.ConfidentialHTTPClient()
 
-	runtime.log(`[DeadDrop] Verifying employee ${config.employeeId} via ConfidentialHTTP...`)
+	runtime.log(`[INCOGNITO] Verifying employee ${config.employeeId} via ConfidentialHTTP...`)
 
 	const resp = http.sendRequest(runtime, {
 		request: {
@@ -164,10 +164,10 @@ const verifyEmployee = (runtime: Runtime<Config>): EmployeeVerification => {
 	const data = json(resp) as EmployeeVerification
 
 	if (!data.verified) {
-		throw new Error('[DeadDrop] Employee verification failed — claim rejected')
+		throw new Error('[INCOGNITO] Employee verification failed — claim rejected')
 	}
 
-	runtime.log(`[DeadDrop] ✓ Verified: ${data.role} / ${data.dept}`)
+	runtime.log(`[INCOGNITO] ✓ Verified: ${data.role} / ${data.dept}`)
 	return data
 }
 
@@ -180,7 +180,7 @@ const runIntakeAgent = (
 	verification: EmployeeVerification,
 ): IntakeTriage => {
 	const { config } = runtime
-	runtime.log('[DeadDrop] AGENT 1: Intake Triage Agent running...')
+	runtime.log('[INCOGNITO] AGENT 1: Intake Triage Agent running...')
 
 	const raw = callConfidentialAI(
 		runtime,
@@ -201,10 +201,10 @@ Severity: 1=minor, 2=serious, 3=critical public interest. Only set proceed=false
 	)
 
 	const triage = JSON.parse(raw) as IntakeTriage
-	runtime.log(`[DeadDrop] Agent 1 ✓ category=${triage.category} severity_hint=${triage.severity_hint} proceed=${triage.proceed}`)
+	runtime.log(`[INCOGNITO] Agent 1 ✓ category=${triage.category} severity_hint=${triage.severity_hint} proceed=${triage.proceed}`)
 
 	if (!triage.proceed) {
-		throw new Error(`[DeadDrop] Triage agent rejected claim: ${triage.triage_reason}`)
+		throw new Error(`[INCOGNITO] Triage agent rejected claim: ${triage.triage_reason}`)
 	}
 
 	return triage
@@ -235,7 +235,7 @@ const runSpecialistAgent = (
 	triage: IntakeTriage,
 ): SpecialistAnalysis => {
 	const { config } = runtime
-	runtime.log(`[DeadDrop] AGENT 2: ${triage.category} Specialist Agent running...`)
+	runtime.log(`[INCOGNITO] AGENT 2: ${triage.category} Specialist Agent running...`)
 
 	const raw = callConfidentialAI(
 		runtime,
@@ -266,7 +266,7 @@ Extract entities, assess evidence quality, and identify specific violations. Out
 
 	const analysis = JSON.parse(raw) as SpecialistAnalysis
 	runtime.log(
-		`[DeadDrop] Agent 2 ✓ evidence_quality=${analysis.evidence_quality}/10 violations=${analysis.specific_violations?.length ?? 0}`,
+		`[INCOGNITO] Agent 2 ✓ evidence_quality=${analysis.evidence_quality}/10 violations=${analysis.specific_violations?.length ?? 0}`,
 	)
 	return analysis
 }
@@ -280,7 +280,7 @@ const runLegalAgent = (
 	triage: IntakeTriage,
 	analysis: SpecialistAnalysis,
 ): LegalAssessment => {
-	runtime.log('[DeadDrop] AGENT 3: Legal Assessment Agent running...')
+	runtime.log('[INCOGNITO] AGENT 3: Legal Assessment Agent running...')
 
 	const raw = callConfidentialAI(
 		runtime,
@@ -308,7 +308,7 @@ Determine applicable laws and protections. Output JSON only:
 
 	const legal = JSON.parse(raw) as LegalAssessment
 	runtime.log(
-		`[DeadDrop] Agent 3 ✓ protection=${legal.protection_level} SEC_eligible=${legal.sec_award_eligible}`,
+		`[INCOGNITO] Agent 3 ✓ protection=${legal.protection_level} SEC_eligible=${legal.sec_award_eligible}`,
 	)
 	return legal
 }
@@ -323,7 +323,7 @@ const runVerdictAgent = (
 	analysis: SpecialistAnalysis,
 	legal: LegalAssessment,
 ): FinalVerdict => {
-	runtime.log('[DeadDrop] AGENT 4: Verdict Synthesis Agent running...')
+	runtime.log('[INCOGNITO] AGENT 4: Verdict Synthesis Agent running...')
 
 	const raw = callConfidentialAI(
 		runtime,
@@ -365,7 +365,7 @@ Route: internal=board/legal/compliance only, public=regulators+media, law_enforc
 	verdict.identity = 'UNKNOWABLE'
 
 	runtime.log(
-		`[DeadDrop] Agent 4 ✓ credible=${verdict.credible} severity=${verdict.severity} route=${verdict.route}`,
+		`[INCOGNITO] Agent 4 ✓ credible=${verdict.credible} severity=${verdict.severity} route=${verdict.route}`,
 	)
 	return verdict
 }
@@ -382,7 +382,7 @@ const writeVerdictOnChain = (runtime: Runtime<Config>, verdict: FinalVerdict): s
 	})
 
 	if (!network) {
-		throw new Error(`[DeadDrop] Network not found: ${config.chainSelectorName}`)
+		throw new Error(`[INCOGNITO] Network not found: ${config.chainSelectorName}`)
 	}
 
 	const encodedPayload = encodeAbiParameters(
@@ -405,7 +405,7 @@ const writeVerdictOnChain = (runtime: Runtime<Config>, verdict: FinalVerdict): s
 	const reportResponse = runtime.report(prepareReportRequest(encodedPayload)).result()
 	const evmClient = new cre.capabilities.EVMClient(network.chainSelector.selector)
 
-	runtime.log(`[DeadDrop] Writing 4-agent verdict to DeadDropRegistry at ${config.registryAddress}`)
+	runtime.log(`[INCOGNITO] Writing 4-agent verdict to INCOGNITORegistry at ${config.registryAddress}`)
 
 	const result = evmClient.writeReport(runtime, {
 		receiver: config.registryAddress as Address,
@@ -414,11 +414,11 @@ const writeVerdictOnChain = (runtime: Runtime<Config>, verdict: FinalVerdict): s
 	}).result()
 
 	if (result.txStatus !== TxStatus.SUCCESS) {
-		throw new Error(`[DeadDrop] On-chain write failed: ${result.errorMessage ?? result.txStatus}`)
+		throw new Error(`[INCOGNITO] On-chain write failed: ${result.errorMessage ?? result.txStatus}`)
 	}
 
 	const txHash = result.txHash ? Buffer.from(result.txHash).toString('hex') : 'unknown'
-	runtime.log(`[DeadDrop] ✓ Attested on-chain: 0x${txHash}`)
+	runtime.log(`[INCOGNITO] ✓ Attested on-chain: 0x${txHash}`)
 	return `0x${txHash}`
 }
 
@@ -426,10 +426,10 @@ const writeVerdictOnChain = (runtime: Runtime<Config>, verdict: FinalVerdict): s
 
 export const onCronTrigger = (runtime: Runtime<Config>, payload: CronPayload): string => {
 	if (!payload.scheduledExecutionTime) {
-		throw new Error('[DeadDrop] Missing scheduledExecutionTime')
+		throw new Error('[INCOGNITO] Missing scheduledExecutionTime')
 	}
 
-	runtime.log('[DeadDrop] 4-agent agentic pipeline starting on Chainlink DON...')
+	runtime.log('[INCOGNITO] 4-agent agentic pipeline starting on Chainlink DON...')
 
 	// Step 0: Verify employee identity inside TEE — PII never leaves enclave
 	const verification = verifyEmployee(runtime)
@@ -462,7 +462,7 @@ export const onCronTrigger = (runtime: Runtime<Config>, payload: CronPayload): s
 		txHash,
 	}
 
-	runtime.log(`[DeadDrop] Pipeline complete: ${JSON.stringify(output)}`)
+	runtime.log(`[INCOGNITO] Pipeline complete: ${JSON.stringify(output)}`)
 	return JSON.stringify(output, null, 2)
 }
 

@@ -15,13 +15,13 @@ The SEC Whistleblower Program pays 10–30% of sanctions over $1 million to elig
 
 Traditional anonymous reporting platforms like SecureDrop solve anonymity through operational security — they ask you to trust a server, a process, a human. That trust is a vulnerability.
 
-**DeadDrop eliminates that trust requirement entirely.**
+**INCOGNITO eliminates that trust requirement entirely.**
 
 ---
 
 ## What INCOGNITO Does
 
-DeadDrop is a whistleblowing platform where a verified employee submits a sensitive claim and receives cryptographic proof — before they hit send — that:
+INCOGNITO is a whistleblowing platform where a verified employee submits a sensitive claim and receives cryptographic proof — before they hit send — that:
 
 1. They are a confirmed insider (employee verification inside TEE)
 2. Their claim was independently assessed by a 4-agent AI pipeline (Confidential AI inside TEE)
@@ -83,11 +83,11 @@ Whistleblower submits:
 │    identity     → "UNKNOWABLE"                    │
 │                                                   │
 │  STEP 4: EVMClient.writeReport()                 │
-│    → DeadDropRegistry.sol on Sepolia              │
+│    → INCOGNITORegistry.sol on Sepolia              │
 └──────────────────────────────────────────────────┘
           │
           ▼
-DeadDropRegistry.sol emits:
+INCOGNITORegistry.sol emits:
   InternalReport   (severity 1–2) → board / legal
   PublicDisclosure (severity 3)   → regulators / media / SEC
           │
@@ -161,7 +161,7 @@ Synthesizes all prior agent outputs into the final attested verdict:
 
 ###  Connect the World ($1,000)
 -  Smart contract state change on Sepolia via Chainlink
--  `DeadDropRegistry.sol` emits events based on attested AI verdict
+-  `INCOGNITORegistry.sol` emits events based on attested AI verdict
 -  Contract: `0x2aa4206aa0b9d2434fa96c5330c17fc23709f597`
 
 ---
@@ -249,7 +249,7 @@ evmClient.writeReport(runtime, { receiver: registryAddress, report })
 
 The SEC Whistleblower Program has paid over **$1.9 billion** in awards since 2011. The average award is $5.4 million. The barrier is always the same: credibility without identity exposure.
 
-DeadDrop attestations could:
+INCOGNITO attestations could:
 - Accompany SEC filings as cryptographic proof of insider status
 - Serve as evidence in OSHA retaliation cases
 - Enable anonymous proof-of-insider for financial regulators globally
@@ -280,7 +280,7 @@ cd frontend && npx serve .
 ### CRE Simulation
 
 ```bash
-cd cre-workflow/deaddrop
+cd cre-workflow/INCOGNITO
 cre login
 bun install --cwd ./my-workflow
 cre workflow simulate my-workflow

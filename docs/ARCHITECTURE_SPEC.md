@@ -1,4 +1,4 @@
-# DeadDrop — Architecture Spec
+# INCOGNITO — Architecture Spec
 # Use this to build the dynamic HTML diagram
 
 ## NODES (what exists in the system)
@@ -55,10 +55,10 @@
   - SubNode Step 4: EVMClient.writeReport()
     - Uses viem for ABI encoding
     - Encodes: credible, severity, route, reason, timestamp
-    - Calls DeadDropRegistry.sol on Sepolia
+    - Calls INCOGNITORegistry.sol on Sepolia
 
 ### BLOCKCHAIN LAYER
-- Node: DeadDropRegistry.sol
+- Node: INCOGNITORegistry.sol
   - Network: Ethereum Sepolia (Chain ID: 11155111)
   - Address: 0x2aa4206aa0b9d2434fa96c5330c17fc23709f597
   - Deployment Tx: 0x798dd81ba4e08982973287d145bcad5e426440c56e3ffae8d2fc29ce0a4cc61e
@@ -98,8 +98,8 @@
 3. Mock HR Server → Backend API [{ verified: true, role, department }]
 4. Backend API → Confidential AI API [4 sequential agent calls: intake triage → specialist analysis → legal assessment → verdict synthesis]
 5. Confidential AI API → Backend API [attested JSON verdict]
-6. Backend API → DeadDropRegistry.sol [submitAttestation() call via ethers/viem]
-7. DeadDropRegistry.sol → Ethereum Sepolia [emit InternalReport or PublicDisclosure]
+6. Backend API → INCOGNITORegistry.sol [submitAttestation() call via ethers/viem]
+7. INCOGNITORegistry.sol → Ethereum Sepolia [emit InternalReport or PublicDisclosure]
 8. Ethereum Sepolia → Etherscan [publicly indexed tx]
 9. Backend API → Whistleblower Browser [tx hash + verdict + identity=UNKNOWABLE]
 
@@ -107,7 +107,7 @@ In the CRE workflow (production path, replaces steps 2–7):
 4a. CRE Workflow → ConfidentialHTTP → HR API [inside TEE]
 4b. CRE Workflow → ConfidentialHTTP → Confidential AI [inside TEE]
 4c. CRE Workflow → Identity Strip [inside TEE]
-4d. CRE Workflow → EVMClient.writeReport() → DeadDropRegistry.sol
+4d. CRE Workflow → EVMClient.writeReport() → INCOGNITORegistry.sol
 
 ---
 

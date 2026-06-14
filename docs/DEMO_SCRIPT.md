@@ -1,4 +1,4 @@
-# DeadDrop — Screen Recording Demo Script
+# INCOGNITO — Screen Recording Demo Script
 # Format: [SCREEN] what to show | [VOICE] what to say
 
 Total runtime: ~4 minutes
@@ -12,7 +12,7 @@ Have these ready BEFORE hitting record:
 - Terminal 1: running `node mock-hr.js` (port 3002)
 - Terminal 2: running `node index.js` (port 3001) — backend live
 - Terminal 3: running `npx serve .` in /frontend (port 3000)
-- Terminal 4: running `cre workflow simulate my-workflow` — scanning blocks
+- Terminal 4: running `cre workflow simulate staging-settings` — scanning blocks
 - Browser tab 1: http://localhost:3000 (the form)
 - Browser tab 2: Etherscan Sepolia → contract 0x2aa4206aa0b9d2434fa96c5330c17fc23709f597
 - Browser tab 3: Chainlink Confidential AI playground (inference result loaded)
@@ -22,14 +22,14 @@ Have these ready BEFORE hitting record:
 
 ## SEGMENT 1 — THE PROBLEM (0:00–0:30)
 
-[SCREEN] Open with the DeadDrop frontend at localhost:3000. Just show the form, nothing filled in yet.
+[SCREEN] Open with the INCOGNITO frontend at localhost:3000. Just show the form, nothing filled in yet.
 
 [VOICE]
 "Every year, billions of dollars in financial fraud go unreported. Not because employees don't know — but because they can't prove they're insiders without revealing themselves.
 
 The SEC whistleblower program pays 10 to 30 percent of sanctions over a million dollars. But to qualify, you need to prove you're a real insider. And to prove that — you'd have to reveal who you are.
 
-DeadDrop solves this with a cryptographic guarantee, not a promise."
+INCOGNITO solves this with a cryptographic guarantee, not a promise."
 
 ---
 
@@ -46,7 +46,7 @@ Company Email: test@acmecorp.com
 Years at company: 3
 
 [VOICE]
-"A whistleblower opens DeadDrop. They write their claim. They attach evidence. They enter their employee credentials — not to identify themselves publicly, but to prove to the system they're a real insider.
+"A whistleblower opens INCOGNITO. They write their claim. They attach evidence. They enter their employee credentials — not to identify themselves publicly, but to prove to the system they're a real insider.
 
 Then they hit submit. And here's what happens."
 
@@ -134,7 +134,7 @@ The Chainlink Confidential AI Attester is the only stack in the world where you 
 [VOICE]
 "The SEC has paid $1.9 billion in whistleblower awards since 2011. The average award is $5.4 million. The bottleneck is always the same: credibility without identity.
 
-DeadDrop is infrastructure for the next generation of financial enforcement. Built in one night at ETHGlobal New York 2026."
+INCOGNITO is infrastructure for the next generation of financial enforcement. Built in one night at ETHGlobal New York 2026."
 
 [SCREEN] Fade out on the tx hash.
 
@@ -157,15 +157,15 @@ DeadDrop is infrastructure for the next generation of financial enforcement. Bui
 
 ```bash
 # Terminal 1 — HR server
-cd path/to/deaddrop/backend && npm install && node mock-hr.js
+cd path/to/INCOGNITO/backend && npm install && node mock-hr.js
 
 # Terminal 2 — Backend
-cd path/to/deaddrop/backend && node index.js
+cd path/to/INCOGNITO/backend && node index.js
 
 # Terminal 3 — Frontend
-cd path/to/deaddrop/frontend && npx serve .
+cd path/to/INCOGNITO/frontend && npx serve .
 
 # Terminal 4 — CRE
-cd path/to/cre-workflow/deaddrop && cre workflow simulate my-workflow
+cd path/to/cre-workflow/INCOGNITO && cre workflow simulate staging-settings
 # Select: staging-settings
 ```

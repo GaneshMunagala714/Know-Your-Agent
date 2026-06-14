@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 /**
- * DeadDrop Registry
+ * INCOGNITO Registry
  * ETHGlobal NYC 2026
  *
  * Receives attested whistleblower verdicts from the Chainlink CRE DON.
@@ -15,7 +15,7 @@ pragma solidity ^0.8.19;
  *
  * Deploy to Sepolia via Remix. No constructor args needed.
  */
-contract DeadDropRegistry {
+contract INCOGNITORegistry {
 
     // ── IReceiver (Chainlink Keystone) ────────────────────────────────────────
 
@@ -87,8 +87,8 @@ contract DeadDropRegistry {
         string memory reason,
         uint256       timestamp
     ) internal {
-        require(credible, "DeadDrop: claim not credible");
-        require(severity >= 1 && severity <= 3, "DeadDrop: invalid severity");
+        require(credible, "INCOGNITO: claim not credible");
+        require(severity >= 1 && severity <= 3, "INCOGNITO: invalid severity");
 
         uint256 id = attestations.length;
 
@@ -115,7 +115,7 @@ contract DeadDropRegistry {
         view
         returns (Attestation memory)
     {
-        require(id < attestations.length, "DeadDrop: id out of range");
+        require(id < attestations.length, "INCOGNITO: id out of range");
         return attestations[id];
     }
 

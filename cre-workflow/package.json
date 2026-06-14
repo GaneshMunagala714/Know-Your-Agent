@@ -1,7 +1,7 @@
 {
-  "name": "deaddrop-cre-workflow",
+  "name": "incognito-cre-workflow",
   "version": "1.0.0",
-  "description": "DeadDrop CRE workflow — Chainlink Runtime Environment",
+  "description": "INCOGNITO CRE workflow — Chainlink Runtime Environment",
   "main": "workflow.ts",
   "scripts": {
     "simulate": "cre simulate --workflow workflow.ts --input test-input.json",

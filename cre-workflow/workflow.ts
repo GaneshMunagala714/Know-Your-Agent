@@ -66,7 +66,7 @@ function verifyEmployee(runtime: Runtime<Config>): EmployeeVerification {
   const { config } = runtime
   const confidentialHttp = new cre.capabilities.ConfidentialHTTPClient()
 
-  runtime.log(`[DeadDrop] Verifying employee=${config.employee_id} via ConfidentialHTTP...`)
+  runtime.log(`[INCOGNITO] Verifying employee=${config.employee_id} via ConfidentialHTTP...`)
 
   const resp = confidentialHttp.sendRequest(runtime, {
     request: {
@@ -86,10 +86,10 @@ function verifyEmployee(runtime: Runtime<Config>): EmployeeVerification {
   const data = json(resp) as EmployeeVerification
 
   if (!data.verified) {
-    throw new Error('DeadDrop: Employee verification failed — not a confirmed insider')
+    throw new Error('INCOGNITO: Employee verification failed — not a confirmed insider')
   }
 
-  runtime.log(`[DeadDrop] Employee verified: role=${data.role} dept=${data.dept}`)
+  runtime.log(`[INCOGNITO] Employee verified: role=${data.role} dept=${data.dept}`)
   return data
 }
 
@@ -102,7 +102,7 @@ function assessClaim(
   const { config } = runtime
   const confidentialHttp = new cre.capabilities.ConfidentialHTTPClient()
 
-  runtime.log('[DeadDrop] Running Confidential AI assessment...')
+  runtime.log('[INCOGNITO] Running Confidential AI assessment...')
 
   const prompt = `You are a compliance AI inside a Chainlink TEE (Trusted Execution Environment). Your assessment is cryptographically attested and cannot be tampered with.
 
@@ -150,7 +150,7 @@ Route: internal=escalate to board, public=route to regulators/media`
   const content = body.choices?.[0]?.message?.content ?? '{}'
   const verdict = JSON.parse(content.replace(/```json|```/g, '').trim()) as AIVerdict
 
-  runtime.log(`[DeadDrop] AI verdict: credible=${verdict.credible} severity=${verdict.severity} route=${verdict.route}`)
+  runtime.log(`[INCOGNITO] AI verdict: credible=${verdict.credible} severity=${verdict.severity} route=${verdict.route}`)
   return verdict
 }
 
@@ -172,7 +172,7 @@ function buildAttestation(verdict: AIVerdict): WorkflowOutput {
 // ── Main workflow handler ─────────────────────────────────────────────────────
 
 const onTrigger = (runtime: Runtime<Config>): string => {
-  runtime.log('[DeadDrop] Workflow triggered on Chainlink DON')
+  runtime.log('[INCOGNITO] Workflow triggered on Chainlink DON')
 
   // Step 1: Employee verification inside TEE
   const verification = verifyEmployee(runtime)
@@ -183,7 +183,7 @@ const onTrigger = (runtime: Runtime<Config>): string => {
   // Step 3: Strip identity — employee data never leaves this function
   const output = buildAttestation(verdict)
 
-  runtime.log(`[DeadDrop] Complete. severity=${output.severity} route=${output.route} identity=${output.identity}`)
+  runtime.log(`[INCOGNITO] Complete. severity=${output.severity} route=${output.route} identity=${output.identity}`)
 
   return JSON.stringify(output, null, 2)
 }

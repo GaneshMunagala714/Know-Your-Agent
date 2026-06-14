@@ -5,7 +5,7 @@
   "employee_id": "",
   "company_email": "",
   "tenure_years": 0,
-  "hr_api_url": "https://hr-api.deaddrop.dev/verify",
+  "hr_api_url": "https://hr-api.incognito.dev/verify",
   "hr_api_key": "REPLACE_WITH_HR_API_KEY",
   "ai_api_url": "https://api.openai.com/v1/chat/completions",
   "ai_api_key": "REPLACE_WITH_CHAINLINK_AI_KEY",

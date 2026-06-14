@@ -251,7 +251,7 @@ footer{border-top:1px solid var(--b1);margin-top:40px;}
   <div class="hero-stats">
     <div class="hstat"><div class="hstat-label">Identity</div><div class="hstat-value">UNKNOWABLE</div></div>
     <div class="hstat"><div class="hstat-label">Attestation</div><div class="hstat-value">ON-CHAIN</div></div>
-    <div class="hstat"><div class="hstat-label">Runtime</div><div class="hstat-value">INTEL SGX TEE</div></div>
+    <div class="hstat"><div class="hstat-label">Runtime</div><div class="hstat-value">Chainlink TEE</div></div>
     <div class="hstat"><div class="hstat-label">Agents</div><div class="hstat-value">4 × SPECIALIZED</div></div>
   </div>
 </div>
@@ -532,7 +532,7 @@ async function handleSubmit(){
   await addLine('  ✓  identity confirmed · PII sealed','ok');
   await addBlank(80);
   await addLine('[AGENT 1]    intake triage · · ·','a1',240);
-  await addLine('  · qwen3.6 · chainlink SGX · 256K ctx','_',280);
+  await addLine('  · qwen3.6 · chainlink TEE · 256K ctx','_',280);
 
   let res;
   try{const{ok,data}=await apiPromise;if(!ok)throw new Error(data.error||'Submission failed');res=data;}

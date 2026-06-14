@@ -1,11 +1,11 @@
 # ==========================================================================
-# DeadDrop — CRE Workflow Settings
+# INCOGNITO — CRE Workflow Settings
 # ETHGlobal NYC 2026
 # ==========================================================================
 
 staging-settings:
   user-workflow:
-    workflow-name: "dead-drop-demo"
+    workflow-name: "incognito-demo"
   workflow-artifacts:
     workflow-path: "./workflow.ts"
     config-path: "./config/config.demo.json"
@@ -13,7 +13,7 @@ staging-settings:
 
 production-settings:
   user-workflow:
-    workflow-name: "dead-drop"
+    workflow-name: "incognito"
   workflow-artifacts:
     workflow-path: "./workflow.ts"
     config-path: "./config/config.production.json"
