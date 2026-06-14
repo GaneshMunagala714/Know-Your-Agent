@@ -24,7 +24,7 @@ Traditional anonymous reporting platforms like SecureDrop solve anonymity throug
 DeadDrop is a whistleblowing platform where a verified employee submits a sensitive claim and receives cryptographic proof — before they hit send — that:
 
 1. They are a confirmed insider (employee verification inside TEE)
-2. Their claim was independently assessed by a 6-step AI agent (Confidential AI inside TEE)
+2. Their claim was independently assessed by a 4-agent AI pipeline (Confidential AI inside TEE)
 3. Their identity was mathematically stripped — unknowable to anyone
 4. The verdict was posted on-chain and is publicly verifiable by anyone with the tx hash
 
@@ -67,13 +67,14 @@ Whistleblower submits:
 │    PII stays inside — never exits                 │
 │                                                   │
 │  STEP 2: ConfidentialHTTP → Confidential AI      │
-│    6-step NLP agent pipeline:                     │
-│    ├── Entity extraction (people, orgs, amounts)  │
-│    ├── Evidence cross-reference + scoring 1-10    │
-│    ├── Regulatory classification (SEC/OSHA/OSC)   │
-│    ├── Insider access validation                  │
-│    ├── Protected disclosure assessment            │
-│    └── SEC award eligibility (10-30% on >$1M)    │
+│    4-agent pipeline:                              │
+│    ├── Agent 1 — Intake Triage (categorize +      │
+│    │   route to specialist)                       │
+│    ├── Agent 2 — Specialist Analysis (entities,   │
+│    │   evidence scoring 1-10, violations)         │
+│    ├── Agent 3 — Legal Assessment (SEC/OSHA/DOJ,   │
+│    │   SOX/Dodd-Frank protections, SEC award)     │
+│    └── Agent 4 — Verdict Synthesis                │
 │    Output: structured attested verdict            │
 │                                                   │
 │  STEP 3: Strip all identity                       │
@@ -99,48 +100,44 @@ Whistleblower receives:
 
 ---
 
-## The 6-Step AI Agent Pipeline
+## The 4-Agent AI Pipeline
 
-All 6 steps execute inside the Chainlink TEE via Confidential AI. The reasoning is cryptographically attested — no one can view or alter it.
+All 4 agents execute inside the Chainlink TEE via Confidential AI, each specialized for a different stage of triage and assessment. The reasoning is cryptographically attested — no one can view or alter it.
 
-### Step 1: Entity Extraction (NLP)
-Parses the raw claim text and extracts:
-- **People** — names, roles, titles
-- **Organizations** — companies, subsidiaries, shell entities, vendors
-- **Financial Amounts** — exact figures, currencies, transaction values
-- **Dates & Timeframes** — when events occurred
-- **Documents & Systems** — records, databases, policies referenced
+### Agent 1: Intake Triage
+Quickly categorizes the claim and decides whether to proceed:
+- `FINANCIAL_FRAUD`, `SECURITIES_VIOLATION`, `WORKPLACE_SAFETY`, `CORRUPTION`, `DATA_PRIVACY`, or `OTHER`
+- Assigns a severity hint (1=minor, 2=serious, 3=critical)
+- Routes the claim to the matching specialist agent
 
-### Step 2: Evidence Cross-Reference
-Each evidence item scored 1–10 for specificity, verifiability, and corroboration with extracted entities.
+### Agent 2: Specialist Analysis (branches by category)
+A category-specific specialist (Financial Forensics, Securities Compliance, OSHA Safety, Anti-Corruption, Data Privacy, or General Compliance) performs deep analysis:
+- **Entity extraction** — people, organizations, financial amounts, dates, documents
+- **Evidence scoring** — 1–10 for specificity, verifiability, and corroboration
+- **Specific violations** — concrete alleged violations and key risks
+- **Investigation steps** — recommended next steps
 
-### Step 3: Regulatory Classification
-Maps to applicable U.S. regulatory framework:
-- `FINANCIAL_FRAUD` — invoice manipulation, embezzlement, false reporting
-- `SECURITIES_VIOLATION` — insider trading, false SEC disclosures
-- `WORKPLACE_SAFETY` — OSHA violations
-- `CORRUPTION` — bribery, kickbacks, conflicts of interest
-- `DATA_PRIVACY` — unauthorized access or sharing
+### Agent 3: Legal Assessment
+Maps findings to U.S. whistleblower law (Dodd-Frank 21F, SOX 806, OSHA 11(c), False Claims Act, FCPA):
+- Applicable laws and relevant agencies (SEC, DOJ, OSHA, etc.)
+- Protection level: `STRONG` | `MODERATE` | `WEAK` | `NONE`
+- **SEC Whistleblower Program**: SEC award eligibility (10–30% on sanctions over $1M)
 
-### Step 4: Insider Access Validation
-Does this employee's role give plausible access to the information described? Would an external party have this level of detail?
-
-### Step 5: Protected Disclosure Assessment
-- Is this specific enough to constitute a protected disclosure?
-- **SEC Whistleblower Program**: Does this qualify for 10–30% award on sanctions over $1M?
-- Which agencies should receive the referral?
-
-### Step 6: Attested Verdict (on-chain)
+### Agent 4: Verdict Synthesis (on-chain)
+Synthesizes all prior agent outputs into the final attested verdict:
 ```json
 {
   "credible": true,
   "severity": 3,
   "violation_type": "FINANCIAL_FRAUD",
-  "reason": "Verified Finance Engineer submitted specific corroborated claim of $4.2M invoice fraud with unregistered vendor",
   "route": "public",
+  "reason": "Verified insider claim of financial fraud assessed as critical misconduct",
+  "protection_level": "STRONG",
   "protected_disclosure": true,
   "sec_award_eligible": true,
-  "recommended_agencies": ["SEC", "DOJ", "FBI"],
+  "recommended_agencies": ["SEC", "DOJ"],
+  "entities": { "people": [], "organizations": [], "amounts": [], "dates": [], "documents": [] },
+  "evidence_quality": 8,
   "identity": "UNKNOWABLE"
 }
 ```
@@ -324,8 +321,15 @@ Listening for logs starting at block 11054576...
 | First inference | ID `019ec2ae` — clean JSON verdict from inside TEE |
 | Contract deployed | `0x2aa4...f597` on Sepolia — verified Sourcify + Blockscout |
 | CRE simulation live | Compiled, scanning block 11054576+ on Sepolia |
-| 6-step NLP agent | Entity extraction, evidence scoring, SEC award assessment |
+| 4-agent NLP pipeline | Intake triage, specialist analysis, legal assessment, verdict synthesis |
 | Full demo working | Form → TEE → verdict → on-chain → Etherscan |
+
+---
+
+## Docs
+
+- [Architecture Spec](docs/ARCHITECTURE_SPEC.md) — full node/data-flow breakdown for diagramming
+- [Demo Script](docs/DEMO_SCRIPT.md) — screen recording walkthrough
 
 ---
 

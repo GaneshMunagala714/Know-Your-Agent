@@ -61,6 +61,7 @@ contract DeadDropRegistry {
         string  route;
         string  reason;
         uint256 timestamp;
+        string  identity;
     }
 
     Attestation[] public attestations;
@@ -96,7 +97,8 @@ contract DeadDropRegistry {
             severity:  severity,
             route:     route,
             reason:    reason,
-            timestamp: timestamp
+            timestamp: timestamp,
+            identity:  "UNKNOWABLE"
         }));
 
         if (severity <= 2) {

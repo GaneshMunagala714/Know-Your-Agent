@@ -5,439 +5,1151 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeadDrop — Provably Anonymous Whistleblowing</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --bg: #0a0a0f;
-      --surface: #11111a;
-      --surface2: #16161f;
-      --border: #1e1e2e;
-      --accent: #5b6ef5;
-      --accent-glow: rgba(91,110,245,0.25);
-      --green: #00d4aa;
-      --green-glow: rgba(0,212,170,0.15);
-      --red: #ff4757;
-      --yellow: #ffd32a;
-      --text: #e8e8f0;
-      --muted: #5a5a72;
-      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --mono: 'SF Mono', 'Fira Code', monospace;
-    }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
-
-    /* Layout */
-    .page { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
-
-    /* Header */
-    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 48px; }
-    .logo-icon { font-size: 22px; }
-    .logo-name { font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
-    .logo-badge {
-      margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: #818cf8;
-      background: rgba(129,140,248,.1); border: 1px solid rgba(129,140,248,.2);
-      border-radius: 999px; padding: 3px 10px;
+      --bg: #07070d;
+      --surface: #0e0e18;
+      --surface2: #13131f;
+      --border: #1a1a2e;
+      --border2: #242438;
+      --accent: #4f6ef7;
+      --accent-dim: rgba(79, 110, 247, 0.15);
+      --accent-glow: rgba(79, 110, 247, 0.3);
+      --green: #00c896;
+      --green-dim: rgba(0, 200, 150, 0.12);
+      --red: #ff4d6d;
+      --yellow: #f5c542;
+      --text: #e2e2f0;
+      --muted: #52526e;
+      --muted2: #3a3a52;
+      --font: 'Inter', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
     }
 
-    .hero { text-align: center; margin-bottom: 40px; }
-    .hero h1 { font-size: 38px; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 14px; }
-    .hero h1 span { color: var(--accent); }
-    .hero p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 440px; margin: 0 auto; }
-    .hero .tagline { font-size: 12px; color: var(--green); font-weight: 600; letter-spacing: .05em; margin-top: 10px; }
+    html { scroll-behavior: smooth; }
 
-    /* Card */
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(7, 7, 13, 0.9);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .nav-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(79, 110, 247, 0.3);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid rgba(0, 200, 150, 0.2);
+      border-radius: 999px;
+      padding: 5px 14px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #4f6ef7, #00c896);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    /* ── PIPELINE VISUALIZATION ── */
+    .pipeline-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .pipeline-step {
+      background: var(--surface);
+      padding: 20px 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .pipeline-step:first-child { border-radius: 14px 0 0 14px; }
+    .pipeline-step:last-child { border-radius: 0 14px 14px 0; }
+
+    .step-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .step-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .main { grid-template-columns: 1fr; }
+      nav { padding: 16px 20px; }
+    }
+
+    /* ── CARD ── */
     .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 32px; margin-bottom: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
     }
-    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-    .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
 
-    /* Steps */
-    .steps { display: flex; gap: 8px; margin-bottom: 28px; }
-    .step {
-      flex: 1; height: 3px; border-radius: 999px; background: var(--border);
-      transition: background .3s;
+    .card-header {
+      margin-bottom: 24px;
     }
-    .step.active { background: var(--accent); }
-    .step.done { background: var(--green); }
 
-    /* Field */
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── FIELDS ── */
     .field { margin-bottom: 18px; }
+
     .field label {
-      display: block; font-size: 11px; font-weight: 600; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 7px;
-    }
-    .field input, .field textarea, .field select {
-      width: 100%; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 14px; color: var(--text);
-      font-family: var(--font); font-size: 14px; outline: none;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .field textarea { height: 110px; resize: vertical; line-height: 1.6; }
-    .field input:focus, .field textarea:focus {
-      border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-    .field input::placeholder, .field textarea::placeholder { color: #2a2a3e; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    /* Severity */
-    .severity-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 6px; }
-    .sev-btn {
-      padding: 10px; border-radius: 10px; border: 1px solid var(--border);
-      background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 600;
-      cursor: default; text-align: center;
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
     }
 
-    /* Submit */
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field textarea {
+      height: 100px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--muted2); }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── SUBMIT ── */
     .submit-btn {
-      width: 100%; background: var(--accent); color: #fff; border: none;
-      border-radius: 12px; padding: 15px; font-size: 15px; font-weight: 700;
-      cursor: pointer; margin-top: 6px; transition: opacity .2s, transform .1s;
-      letter-spacing: -.01em;
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+      letter-spacing: -0.2px;
     }
-    .submit-btn:hover:not(:disabled) { opacity: .9; transform: translateY(-1px); }
-    .submit-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
-    .note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
-
-    /* Processing */
-    .processing { display: none; }
-    .processing.show { display: block; }
-    .proc-steps { space-y: 12px; }
-    .proc-step {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 16px; border-radius: 12px; margin-bottom: 8px;
-      border: 1px solid var(--border); background: var(--surface2);
-      font-size: 13px; transition: all .3s;
+    .submit-btn:hover:not(:disabled) {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(79, 110, 247, 0.35);
     }
-    .proc-step.active { border-color: rgba(91,110,245,.4); background: rgba(91,110,245,.06); }
-    .proc-step.done  { border-color: rgba(0,212,170,.25); background: rgba(0,212,170,.05); }
-    .proc-step.done .step-icon { color: var(--green); }
-    .proc-step.active .step-icon { animation: spin 1s linear infinite; display: inline-block; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .step-label { flex: 1; }
-    .step-label .step-title { font-weight: 600; font-size: 13px; }
-    .step-label .step-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .step-tag {
-      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
-      text-transform: uppercase; letter-spacing: .06em;
-    }
-    .tag-pending { background: rgba(90,90,114,.15); color: var(--muted); }
-    .tag-running { background: rgba(91,110,245,.15); color: #818cf8; }
-    .tag-done    { background: rgba(0,212,170,.12); color: var(--green); }
 
-    /* Result */
-    .result-card {
-      background: var(--surface); border-radius: 20px; padding: 28px;
-      border: 1px solid var(--green); box-shadow: 0 0 32px var(--green-glow);
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .privacy-note {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ── LOADING ── */
+    .loading {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .loading.active { display: flex; }
+
+    .loading-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .loading-step.active {
+      opacity: 1;
+      color: var(--text);
+    }
+
+    .loading-step.done { color: var(--green); }
+
+    .loading-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border2);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .loading-step.active .loading-icon {
+      border-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    .loading-step.done .loading-icon {
+      border-color: var(--green);
+      background: var(--green-dim);
+      animation: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── RESULT ── */
+    .result-panel {
       display: none;
     }
-    .result-card.show { display: block; animation: fadeUp .4s ease; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    .result-panel.active { display: block; }
 
     .result-header {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
     }
-    .result-header .icon { font-size: 20px; }
-    .result-header h3 { font-size: 16px; font-weight: 700; color: var(--green); }
-    .result-header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .result-status {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    .result-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .result-section {
+      margin-bottom: 20px;
+    }
+
+    .result-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
 
     .result-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 13px;
-    }
-    .result-row:last-of-type { border-bottom: none; }
-    .result-row .rk { color: var(--muted); }
-    .result-row .rv { font-weight: 600; font-family: var(--mono); font-size: 12px; }
-    .unknowable { color: var(--green); letter-spacing: 1px; font-size: 11px !important; }
-    .sev1 { color: var(--yellow); }
-    .sev2 { color: #ff9f43; }
-    .sev3 { color: var(--red); }
-    .public-badge { color: var(--red); }
-    .internal-badge { color: #74b9ff; }
-
-    .tx-box {
-      margin-top: 16px; padding: 14px; background: var(--bg);
-      border: 1px solid var(--border); border-radius: 12px;
-    }
-    .tx-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-    .tx-hash { font-family: var(--mono); font-size: 11px; color: #818cf8; word-break: break-all; }
-    .tx-link { font-size: 11px; color: var(--accent); margin-top: 6px; display: inline-block; }
-
-    .proof-note {
-      margin-top: 16px; text-align: center; font-size: 11px; color: var(--muted); line-height: 1.6;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      gap: 12px;
     }
 
-    .try-again {
-      display: block; text-align: center; margin-top: 20px;
-      font-size: 13px; color: var(--muted); cursor: pointer;
-      text-decoration: underline; text-underline-offset: 3px;
-    }
-    .try-again:hover { color: var(--text); }
+    .result-row:last-child { border-bottom: none; }
 
-    /* Error */
-    .error-box {
-      background: rgba(255,71,87,.07); border: 1px solid rgba(255,71,87,.2);
-      border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #ff6b81;
-      margin-top: 12px; display: none;
+    .result-key { color: var(--muted); flex-shrink: 0; }
+    .result-val { color: var(--text); font-weight: 500; text-align: right; word-break: break-word; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
-    .error-box.show { display: block; }
+
+    .badge-red { background: rgba(255, 77, 109, 0.15); color: var(--red); }
+    .badge-yellow { background: rgba(245, 197, 66, 0.15); color: var(--yellow); }
+    .badge-green { background: var(--green-dim); color: var(--green); }
+    .badge-blue { background: var(--accent-dim); color: var(--accent); }
+
+    .unknowable {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+
+    .tx-hash {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      word-break: break-all;
+      cursor: pointer;
+    }
+
+    .tx-hash:hover { text-decoration: underline; }
+
+    /* ── ENTITIES ── */
+    .entity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .entity-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .entity-type {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .entity-items {
+      font-size: 11px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .entity-empty { color: var(--muted2); font-style: italic; }
+
+    /* ── EVIDENCE SCORES ── */
+    .evidence-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .evidence-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .evidence-desc { font-size: 11px; color: var(--text); flex: 1; margin-right: 8px; }
+
+    .evidence-score {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--mono);
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .evidence-bar {
+      height: 3px;
+      background: var(--border2);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .evidence-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    .evidence-notes { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+    /* ── AGENCIES ── */
+    .agency-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .agency-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(79, 110, 247, 0.2);
+    }
+
+    /* ── PROOF BLOCK ── */
+    .proof-block {
+      background: var(--green-dim);
+      border: 1px solid rgba(0, 200, 150, 0.2);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .proof-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .proof-text {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── INFO PANEL ── */
+    .info-panel .card {
+      margin-bottom: 16px;
+    }
+
+    .how-it-works {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .how-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .how-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(79, 110, 247, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .how-content {}
+    .how-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .how-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    .powered-by {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .power-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .power-icon { font-size: 16px; }
+    .power-name { font-weight: 600; }
+    .power-desc { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+    .error-msg {
+      background: rgba(255, 77, 109, 0.1);
+      border: 1px solid rgba(255, 77, 109, 0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 12px;
+      display: none;
+    }
+
+    .error-msg.active { display: block; }
   </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- Logo -->
-  <div class="logo">
-    <span class="logo-icon">⬡</span>
-    <span class="logo-name">DeadDrop</span>
-    <span class="logo-badge">Chainlink TEE · ETHGlobal NYC 2026</span>
+<nav>
+  <div class="nav-logo">
+    <div class="dot"></div>
+    DeadDrop
   </div>
+  <div class="nav-badge">Powered by Chainlink TEE</div>
+</nav>
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1>Blow the whistle.<br /><span>Not your cover.</span></h1>
-    <p>Your claim goes into a Chainlink TEE. An AI verifies it. Your identity is mathematically stripped before the verdict hits the blockchain.</p>
-    <p class="tagline">SecureDrop asks you to trust a server. DeadDrop gives you cryptographic proof.</p>
+<div class="hero">
+  <div class="hero-tag">🔒 Cryptographically Anonymous</div>
+  <h1>Speak truth.<br><em>Without sacrifice.</em></h1>
+  <p>DeadDrop runs your claim through a 4-agent AI pipeline inside a Chainlink Trusted Execution Environment. Your identity is mathematically unknowable — even to us.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-value">TEE</div>
+      <div class="stat-label">Trusted Execution</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Specialist Agents</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Identity Exposed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">On-chain</div>
+      <div class="stat-label">Attested Verdict</div>
+    </div>
   </div>
+</div>
 
-  <!-- Form -->
-  <div class="card" id="form-card">
-    <div class="steps">
-      <div class="step active" id="s1"></div>
-      <div class="step" id="s2"></div>
-      <div class="step" id="s3"></div>
-      <div class="step" id="s4"></div>
+<div class="pipeline-section">
+  <div class="section-label">Agent Pipeline — runs inside Chainlink TEE</div>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <span class="step-icon">🔒</span>
+      <div class="step-name">Verification</div>
+      <div class="step-desc">Confidential HR check confirms insider status</div>
     </div>
-    <p class="card-title">Submit a Claim</p>
-    <p class="card-sub">Your employee credentials verify you're an insider. Your identity is stripped inside the TEE before anything leaves.</p>
-
-    <div class="field">
-      <label>Your Claim</label>
-      <textarea id="claim" placeholder="Describe the misconduct in detail. Be specific — the AI will assess credibility based on what you write."></textarea>
+    <div class="pipeline-step">
+      <span class="step-icon">🔍</span>
+      <div class="step-name">Intake Triage</div>
+      <div class="step-desc">Categorizes the claim and routes to a specialist</div>
     </div>
-
-    <div class="field">
-      <label>Evidence Summary (optional)</label>
-      <textarea id="evidence" placeholder="Invoice numbers, dates, names of documents, patterns you observed..." style="height:70px"></textarea>
+    <div class="pipeline-step">
+      <span class="step-icon">📊</span>
+      <div class="step-name">Specialist Analysis</div>
+      <div class="step-desc">Extracts entities, scores evidence, finds violations</div>
     </div>
+    <div class="pipeline-step">
+      <span class="step-icon">⚖️</span>
+      <div class="step-name">Legal Assessment</div>
+      <div class="step-desc">Maps to SEC/OSHA/DOJ + SOX/Dodd-Frank protections</div>
+    </div>
+    <div class="pipeline-step">
+      <span class="step-icon">⛓️</span>
+      <div class="step-name">Verdict &amp; Attestation</div>
+      <div class="step-desc">Final verdict posted on-chain to Sepolia</div>
+    </div>
+  </div>
+</div>
 
-    <div class="field-row">
+<div class="main">
+
+  <!-- LEFT: FORM -->
+  <div class="form-panel">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Submit a Claim</div>
+        <div class="card-sub">Your credentials verify you're an insider. Everything else is stripped inside the TEE before anything leaves.</div>
+      </div>
+
       <div class="field">
-        <label>Employee ID</label>
-        <input id="emp_id" placeholder="EMP-4821" />
+        <label>Your Claim *</label>
+        <textarea id="claim" placeholder="Describe the misconduct in specific detail. Include what happened, when, who was involved, and what you witnessed directly..."></textarea>
       </div>
+
       <div class="field">
-        <label>Years at Company</label>
-        <input id="tenure" type="number" placeholder="3" min="0" max="50" />
+        <label>Evidence Summary (optional)</label>
+        <textarea id="evidence" style="height:70px" placeholder="Invoice numbers, email dates, document names, witnesses, systems accessed, patterns you observed..."></textarea>
       </div>
-    </div>
 
-    <div class="field">
-      <label>Company Email</label>
-      <input id="email" type="email" placeholder="you@company.com" />
-    </div>
-
-    <div class="error-box" id="error-box"></div>
-
-    <button class="submit-btn" id="submit-btn" onclick="submitClaim()">
-      Submit Anonymously →
-    </button>
-    <p class="note">Your IP, email, and employee ID are stripped inside a Chainlink SGX enclave before the verdict is written on-chain.</p>
-  </div>
-
-  <!-- Processing -->
-  <div class="card processing" id="processing-card">
-    <p class="card-title">Processing inside Chainlink TEE</p>
-    <p class="card-sub">4 steps. Your identity is stripped after Step 1. It never reaches the output.</p>
-
-    <div id="proc-steps">
-      <div class="proc-step" id="ps1">
-        <span class="step-icon">🔒</span>
-        <div class="step-label">
-          <div class="step-title">Step 1 — Employee Verification</div>
-          <div class="step-detail">Confidential HTTP → HR system</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Employee ID *</label>
+          <input type="text" id="employee_id" placeholder="EMP-4821" />
         </div>
-        <span class="step-tag tag-pending" id="pt1">Pending</span>
-      </div>
-      <div class="proc-step" id="ps2">
-        <span class="step-icon">🤖</span>
-        <div class="step-label">
-          <div class="step-title">Step 2 — AI Claim Assessment</div>
-          <div class="step-detail">Confidential AI Attester — LLM inside enclave</div>
+        <div class="field">
+          <label>Years at Company</label>
+          <input type="number" id="tenure" placeholder="3" min="0" />
         </div>
-        <span class="step-tag tag-pending" id="pt2">Pending</span>
       </div>
-      <div class="proc-step" id="ps3">
-        <span class="step-icon">🗑</span>
-        <div class="step-label">
-          <div class="step-title">Step 3 — Strip Identity</div>
-          <div class="step-detail">IP, email, employee ID — mathematically removed</div>
+
+      <div class="field">
+        <label>Company Email *</label>
+        <input type="email" id="company_email" placeholder="you@company.com" />
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+        Submit Anonymously →
+      </button>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="loading" id="loading">
+        <div class="loading-step" id="ls1">
+          <div class="loading-icon"></div>
+          <span>Verifying employee identity inside TEE...</span>
         </div>
-        <span class="step-tag tag-pending" id="pt3">Pending</span>
-      </div>
-      <div class="proc-step" id="ps4">
-        <span class="step-icon">⛓</span>
-        <div class="step-label">
-          <div class="step-title">Step 4 — Post On-Chain Attestation</div>
-          <div class="step-detail">DeadDropRegistry.sol → Sepolia</div>
+        <div class="loading-step" id="ls2">
+          <div class="loading-icon"></div>
+          <span>Agent 1 — Intake triage and categorization...</span>
         </div>
-        <span class="step-tag tag-pending" id="pt4">Pending</span>
+        <div class="loading-step" id="ls3">
+          <div class="loading-icon"></div>
+          <span>Agent 2 — Specialist analysis and evidence scoring...</span>
+        </div>
+        <div class="loading-step" id="ls4">
+          <div class="loading-icon"></div>
+          <span>Agent 3 — Legal assessment and protection mapping...</span>
+        </div>
+        <div class="loading-step" id="ls5">
+          <div class="loading-icon"></div>
+          <span>Agent 4 — Verdict synthesis and on-chain attestation...</span>
+        </div>
       </div>
+
+      <p class="privacy-note">Your IP, email, and employee ID are stripped inside the Chainlink SGX enclave before the verdict is written on-chain.</p>
     </div>
   </div>
 
-  <!-- Result -->
-  <div class="result-card" id="result-card">
-    <div class="result-header">
-      <span class="icon">✓</span>
-      <div>
-        <h3>Claim Verified &amp; Submitted</h3>
-        <p>Identity stripped inside TEE · Attestation posted on-chain</p>
+  <!-- RIGHT: RESULT + INFO -->
+  <div class="info-panel">
+
+    <!-- RESULT (hidden until submission) -->
+    <div class="result-panel card" id="resultPanel">
+      <div class="result-header">
+        <div class="result-status"></div>
+        <div class="result-title">Claim Verified & Attested On-Chain</div>
+      </div>
+
+      <!-- VERDICT -->
+      <div class="result-section">
+        <div class="result-section-title">Verdict</div>
+        <div class="result-row">
+          <span class="result-key">Credible</span>
+          <span class="result-val" id="r-credible">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-key">Severity</span>
+          <span class="result-val" id="r-severity">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-key">Violation Type</span>
+          <span class="result-val" id="r-violation">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-key">Route</span>
+          <span class="result-val" id="r-route">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-key">Summary</span>
+          <span class="result-val" id="r-reason" style="font-size:11px">—</span>
+        </div>
+      </div>
+
+      <!-- LEGAL -->
+      <div class="result-section">
+        <div class="result-section-title">Legal Assessment</div>
+        <div class="result-row">
+          <span class="result-key">Protected Disclosure</span>
+          <span class="result-val" id="r-protected">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-key">SEC Award Eligible</span>
+          <span class="result-val" id="r-sec">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-key">Insider Access</span>
+          <span class="result-val" id="r-insider" style="font-size:11px">—</span>
+        </div>
+      </div>
+
+      <!-- ENTITIES -->
+      <div class="result-section">
+        <div class="result-section-title">Extracted Entities (NLP)</div>
+        <div class="entity-grid" id="r-entities"></div>
+      </div>
+
+      <!-- EVIDENCE -->
+      <div class="result-section" id="r-evidence-section">
+        <div class="result-section-title">Evidence Scores</div>
+        <div id="r-evidence"></div>
+      </div>
+
+      <!-- AGENCIES -->
+      <div class="result-section">
+        <div class="result-section-title">Recommended Agencies</div>
+        <div class="agency-list" id="r-agencies"></div>
+      </div>
+
+      <!-- IDENTITY + PROOF -->
+      <div class="result-row">
+        <span class="result-key">Your Identity</span>
+        <span class="unknowable">UNKNOWABLE</span>
+      </div>
+
+      <div class="proof-block">
+        <div class="proof-label">On-Chain Attestation</div>
+        <div id="r-txhash" class="tx-hash" style="margin-bottom:6px">—</div>
+        <div class="proof-text">This verdict was generated inside a Chainlink TEE and posted on Sepolia. Anyone can verify the proof.</div>
       </div>
     </div>
 
-    <div class="result-row">
-      <span class="rk">Credible</span>
-      <span class="rv" id="r-credible">—</span>
-    </div>
-    <div class="result-row">
-      <span class="rk">Severity</span>
-      <span class="rv" id="r-severity">—</span>
-    </div>
-    <div class="result-row">
-      <span class="rk">Assessment</span>
-      <span class="rv" id="r-reason" style="max-width:280px;text-align:right;font-family:var(--font)">—</span>
-    </div>
-    <div class="result-row">
-      <span class="rk">Routed To</span>
-      <span class="rv" id="r-route">—</span>
-    </div>
-    <div class="result-row">
-      <span class="rk">Your Identity</span>
-      <span class="rv unknowable">UNKNOWABLE</span>
+    <!-- HOW IT WORKS -->
+    <div class="card" id="howCard">
+      <div class="card-header">
+        <div class="card-title">How it works</div>
+      </div>
+      <div class="how-it-works">
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <div class="how-content">
+            <div class="how-title">You submit a claim</div>
+            <div class="how-desc">Your claim, evidence, and employee credentials are sent to the Chainlink TEE. Your IP and device fingerprints are immediately discarded.</div>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <div class="how-content">
+            <div class="how-title">4-agent AI pipeline runs inside the enclave</div>
+            <div class="how-desc">Intake triage categorizes the claim, a specialist agent extracts entities and scores evidence, a legal agent maps protections and agencies, and a verdict agent synthesizes the final attestation.</div>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <div class="how-content">
+            <div class="how-title">Identity is stripped</div>
+            <div class="how-desc">All identifying data is purged before the verdict exits the enclave. Your name, email, and employee ID never appear in the output.</div>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">4</div>
+          <div class="how-content">
+            <div class="how-title">Verdict is attested on-chain</div>
+            <div class="how-desc">The cryptographic proof is posted to Ethereum Sepolia. The tx hash is your evidence that the TEE processed your claim without tampering.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="tx-box">
-      <div class="tx-label">On-chain attestation TX</div>
-      <div class="tx-hash" id="r-tx">—</div>
-      <a class="tx-link" id="r-tx-link" href="#" target="_blank">View on Etherscan →</a>
+    <!-- POWERED BY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Powered by</div>
+      </div>
+      <div class="powered-by">
+        <div class="power-item">
+          <div class="power-icon">⬡</div>
+          <div>
+            <div class="power-name">Chainlink Confidential AI Attester</div>
+            <div class="power-desc">TEE-based AI inference with cryptographic attestation</div>
+          </div>
+        </div>
+        <div class="power-item">
+          <div class="power-icon">🔒</div>
+          <div>
+            <div class="power-name">Chainlink CRE Workflow</div>
+            <div class="power-desc">Decentralized orchestration on Chainlink DON</div>
+          </div>
+        </div>
+        <div class="power-item">
+          <div class="power-icon">⛓️</div>
+          <div>
+            <div class="power-name">Ethereum Sepolia</div>
+            <div class="power-desc">On-chain attestation registry at 0x2aa4...f597</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <p class="proof-note">Anyone in the world can verify this proof. No one can trace it back to you.</p>
-    <a class="try-again" onclick="reset()">← Submit another claim</a>
   </div>
-
 </div>
 
 <script>
-const API = 'http://localhost:3001';
+  const BACKEND = "http://localhost:3001";
 
-const delay = ms => new Promise(r => setTimeout(r, ms));
+  async function handleSubmit() {
+    const claim = document.getElementById("claim").value.trim();
+    const evidence = document.getElementById("evidence").value.trim();
+    const employee_id = document.getElementById("employee_id").value.trim();
+    const company_email = document.getElementById("company_email").value.trim();
+    const tenure = document.getElementById("tenure").value;
 
-function setStep(n, state) {
-  const el = document.getElementById('ps' + n);
-  const tag = document.getElementById('pt' + n);
-  el.className = 'proc-step ' + state;
-  if (state === 'active') { tag.className = 'step-tag tag-running'; tag.textContent = 'Running…'; }
-  if (state === 'done')   { tag.className = 'step-tag tag-done';    tag.textContent = 'Done'; }
-}
+    const errorEl = document.getElementById("errorMsg");
+    errorEl.classList.remove("active");
 
-function showError(msg) {
-  const box = document.getElementById('error-box');
-  box.textContent = msg;
-  box.className = 'error-box show';
-}
+    if (!claim) return showError("Please describe your claim.");
+    if (!employee_id) return showError("Employee ID is required.");
+    if (!company_email) return showError("Company email is required.");
 
-async function submitClaim() {
-  const claim    = document.getElementById('claim').value.trim();
-  const evidence = document.getElementById('evidence').value.trim();
-  const emp_id   = document.getElementById('emp_id').value.trim();
-  const email    = document.getElementById('email').value.trim();
-  const tenure   = document.getElementById('tenure').value.trim();
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true;
+    btn.textContent = "Processing inside TEE...";
 
-  document.getElementById('error-box').className = 'error-box';
+    const loading = document.getElementById("loading");
+    loading.classList.add("active");
+    document.getElementById("resultPanel").classList.remove("active");
 
-  if (!claim) return showError('Please describe your claim.');
-  if (!emp_id) return showError('Employee ID is required to verify insider status.');
-
-  // Show processing
-  document.getElementById('form-card').style.display = 'none';
-  document.getElementById('processing-card').className = 'card processing show';
-
-  // Animate steps with real timing
-  setStep(1, 'active');
-  await delay(800);
-  setStep(1, 'done');
-
-  setStep(2, 'active');
-
-  let result;
-  try {
-    const res = await fetch(`${API}/submit`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        claim,
-        evidence_summary: evidence,
-        employee_proof: { employee_id: emp_id, company_email: email, tenure_years: parseInt(tenure) || 0 }
-      })
+    // animate loading steps
+    const steps = ["ls1", "ls2", "ls3", "ls4", "ls5"];
+    const delays = [0, 800, 1800, 2800, 3800];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        document.getElementById(id).classList.add("active");
+        if (i > 0) {
+          const prev = document.getElementById(steps[i-1]);
+          prev.classList.remove("active");
+          prev.classList.add("done");
+          prev.querySelector(".loading-icon").textContent = "✓";
+        }
+      }, delays[i]);
     });
-    result = await res.json();
-    if (!res.ok) throw new Error(result.error || 'Submission failed');
-  } catch (err) {
-    document.getElementById('processing-card').className = 'card processing';
-    document.getElementById('form-card').style.display = 'block';
-    showError(err.message);
-    return;
+
+    try {
+      const res = await fetch(`${BACKEND}/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          claim,
+          evidence_summary: evidence,
+          employee_proof: { employee_id, company_email, tenure_years: parseInt(tenure) || 2 },
+        }),
+      });
+
+      const data = await res.json();
+
+      // complete all steps
+      steps.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove("active");
+        el.classList.add("done");
+        el.querySelector(".loading-icon").textContent = "✓";
+      });
+
+      setTimeout(() => {
+        loading.classList.remove("active");
+        if (data.success) {
+          renderResult(data);
+        } else {
+          showError(data.error || "Submission failed");
+          btn.disabled = false;
+          btn.textContent = "Submit Anonymously →";
+        }
+      }, 500);
+
+    } catch (err) {
+      loading.classList.remove("active");
+      showError("Could not reach backend. Make sure node index.js is running on port 3001.");
+      btn.disabled = false;
+      btn.textContent = "Submit Anonymously →";
+    }
   }
 
-  setStep(2, 'done');
-  setStep(3, 'active');
-  await delay(600);
-  setStep(3, 'done');
-  setStep(4, 'active');
-  await delay(900);
-  setStep(4, 'done');
-  await delay(400);
-
-  // Show result
-  document.getElementById('processing-card').className = 'card processing';
-
-  const a = result.attestation;
-  document.getElementById('r-credible').textContent = a.credible ? '✓ Yes' : '✗ No';
-  document.getElementById('r-severity').innerHTML = `<span class="sev${a.severity}">Level ${a.severity} — ${a.severity===1?'Minor':a.severity===2?'Serious':'Critical'}</span>`;
-  document.getElementById('r-reason').textContent = a.reason;
-  document.getElementById('r-route').innerHTML = a.route === 'public'
-    ? '<span class="public-badge">Public Disclosure</span>'
-    : '<span class="internal-badge">Internal Channel</span>';
-
-  const tx = result.tx_hash || '';
-  document.getElementById('r-tx').textContent = tx;
-  const link = document.getElementById('r-tx-link');
-  if (!result.tx_simulated && tx) {
-    link.href = `https://sepolia.etherscan.io/tx/${tx}`;
-    link.textContent = 'View on Etherscan →';
-  } else {
-    link.href = '#';
-    link.textContent = result.tx_simulated ? '(simulated — add wallet to go live)' : '';
+  function showError(msg) {
+    const el = document.getElementById("errorMsg");
+    el.textContent = msg;
+    el.classList.add("active");
   }
 
-  document.getElementById('result-card').className = 'result-card show';
-}
+  function renderResult(data) {
+    const a = data.attestation;
+    const panel = document.getElementById("resultPanel");
+    panel.classList.add("active");
+    document.getElementById("howCard").style.display = "none";
 
-function reset() {
-  document.getElementById('result-card').className = 'result-card';
-  document.getElementById('form-card').style.display = 'block';
-  document.getElementById('claim').value = '';
-  document.getElementById('evidence').value = '';
-  for (let i=1;i<=4;i++) {
-    document.getElementById('ps'+i).className='proc-step';
-    const t=document.getElementById('pt'+i);
-    t.className='step-tag tag-pending'; t.textContent='Pending';
+    // Verdict
+    document.getElementById("r-credible").innerHTML = a.credible
+      ? '<span class="badge badge-green">YES</span>'
+      : '<span class="badge badge-red">NO</span>';
+
+    const sev = a.severity;
+    document.getElementById("r-severity").innerHTML =
+      sev === 3 ? '<span class="badge badge-red">Level 3 — Critical</span>'
+      : sev === 2 ? '<span class="badge badge-yellow">Level 2 — Serious</span>'
+      : '<span class="badge badge-blue">Level 1 — Minor</span>';
+
+    document.getElementById("r-violation").innerHTML =
+      `<span class="badge badge-blue">${(a.violation_type || "UNKNOWN").replace(/_/g, " ")}</span>`;
+
+    document.getElementById("r-route").innerHTML = a.route === "public"
+      ? '<span class="badge badge-red">PUBLIC — Regulators/Media</span>'
+      : '<span class="badge badge-yellow">INTERNAL — Board/Legal</span>';
+
+    document.getElementById("r-reason").textContent = a.reason || "—";
+
+    // Legal
+    document.getElementById("r-protected").innerHTML = a.protected_disclosure
+      ? '<span class="badge badge-green">PROTECTED</span>'
+      : '<span class="badge badge-red">REVIEW NEEDED</span>';
+
+    document.getElementById("r-sec").innerHTML = a.sec_award_eligible
+      ? '<span class="badge badge-green">ELIGIBLE (10–30%)</span>'
+      : '<span class="badge badge-blue">NOT ELIGIBLE</span>';
+
+    document.getElementById("r-insider").textContent = a.insider_access_reason || "—";
+
+    // Entities
+    const entities = a.entities || {};
+    const entityTypes = [
+      { key: "people", label: "People" },
+      { key: "organizations", label: "Organizations" },
+      { key: "amounts", label: "Financial Amounts" },
+      { key: "dates", label: "Dates" },
+      { key: "documents", label: "Documents" },
+    ];
+
+    const entitiesEl = document.getElementById("r-entities");
+    entitiesEl.innerHTML = entityTypes.map(({ key, label }) => {
+      const items = entities[key] || [];
+      return `
+        <div class="entity-card">
+          <div class="entity-type">${label}</div>
+          <div class="entity-items">
+            ${items.length > 0
+              ? items.join(", ")
+              : '<span class="entity-empty">None extracted</span>'}
+          </div>
+        </div>`;
+    }).join("");
+
+    // Evidence scores
+    const evidence = a.evidence_analysis || a.evidence_scores || [];
+    const evidenceEl = document.getElementById("r-evidence");
+    if (evidence.length > 0) {
+      evidenceEl.innerHTML = evidence.map(ev => {
+        const score = ev.specificity_score || ev.score || 5;
+        const desc = ev.item || ev.description || "Evidence item";
+        const notes = ev.notes || ev.reason || "";
+        return `
+          <div class="evidence-item">
+            <div class="evidence-header">
+              <div class="evidence-desc">${desc}</div>
+              <div class="evidence-score">${score}/10</div>
+            </div>
+            <div class="evidence-bar">
+              <div class="evidence-bar-fill" style="width:${score * 10}%"></div>
+            </div>
+            ${notes ? `<div class="evidence-notes">${notes}</div>` : ""}
+          </div>`;
+      }).join("");
+    } else {
+      evidenceEl.innerHTML = '<div style="font-size:11px;color:var(--muted)">No evidence items scored</div>';
+    }
+
+    // Agencies
+    const agencies = a.recommended_agencies || [];
+    document.getElementById("r-agencies").innerHTML = agencies.length > 0
+      ? agencies.map(a => `<span class="agency-tag">${a}</span>`).join("")
+      : '<span style="font-size:11px;color:var(--muted)">None recommended</span>';
+
+    // TX hash
+    const txEl = document.getElementById("r-txhash");
+    if (data.tx_hash && !data.tx_simulated) {
+      txEl.textContent = data.tx_hash;
+      txEl.onclick = () => window.open(`https://sepolia.etherscan.io/tx/${data.tx_hash}`, "_blank");
+    } else if (data.tx_hash) {
+      txEl.textContent = data.tx_hash + " (simulated)";
+      txEl.style.color = "var(--muted)";
+    }
+
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-}
 </script>
 </body>
 </html>
