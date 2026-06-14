@@ -7,8 +7,8 @@
   "tenureYears": 3,
   "hrApiUrl": "http://localhost:3002/verify",
   "hrApiKey": "mock-key-for-demo",
-  "aiApiUrl": "https://confidential-ai-dev-preview.cldev.cloud",
-  "aiApiKey": "TS4yJtUgn6KgWsCNtoQtHohLBcxpoHpi1bhCFVdyt2er",
+  "aiApiUrl": "https://confidential-ai-dev-preview.cldev.cloud/v1/inference",
+  "aiApiKey": "REPLACE_WITH_CHAINLINK_AI_KEY",
   "registryAddress": "0x2aa4206aa0b9d2434fa96c5330c17fc23709f597",
   "chainSelectorName": "ethereum-testnet-sepolia",
   "gasLimit": "500000"

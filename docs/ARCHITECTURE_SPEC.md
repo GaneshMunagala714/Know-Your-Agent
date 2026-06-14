@@ -23,8 +23,8 @@
   - In production: replaced by ConfidentialHTTP call inside TEE
 
 ### CHAINLINK TEE LAYER — THE CORE
-- Node: CRE Workflow (cre-workflow/workflow.ts)
-  - Orchestrated by Chainlink CRE SDK @chainlink/cre-sdk@1.11.0
+- Node: CRE Workflow (workflow/workflow.ts)
+  - Orchestrated by Chainlink CRE SDK @chainlink/cre-sdk
   - Runs inside Chainlink Decentralized Oracle Network
   - Contains 4 sequential steps:
 

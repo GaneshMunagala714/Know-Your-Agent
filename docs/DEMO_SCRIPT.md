@@ -166,6 +166,6 @@ cd path/to/INCOGNITO/backend && node index.js
 cd path/to/INCOGNITO/frontend && npx serve .
 
 # Terminal 4 — CRE
-cd path/to/cre-workflow/INCOGNITO && cre workflow simulate staging-settings
+cd path/to/workflow && npm install && cre login && cre workflow simulate
 # Select: staging-settings
 ```

@@ -230,7 +230,7 @@ const verification = confidentialHttp.sendRequest(runtime, {
   request: { url: config.hr_api_url, method: 'POST', bodyString: ... }
 }).result()
 
-// Step 2: Confidential AI — 6-step agent assessment inside TEE
+// Step 2: Confidential AI — 4-agent assessment inside TEE
 const verdict = confidentialHttp.sendRequest(runtime, {
   request: { url: 'confidential-ai-dev-preview.cldev.cloud/v1/inference', ... }
 }).result()
@@ -280,10 +280,10 @@ cd frontend && npx serve .
 ### CRE Simulation
 
 ```bash
-cd cre-workflow/INCOGNITO
+cd workflow
+npm install
 cre login
-bun install --cwd ./my-workflow
-cre workflow simulate my-workflow
+cre workflow simulate
 # Select: staging-settings
 ```
 
@@ -295,6 +295,18 @@ Binary hash: d184bdafaa9b92191f9daee11855843e67f3ca96277ab6b91f36accbc50376b8
 Chain: ethereum-testnet-sepolia
 Contract: 0x2AA4206Aa0B9d2434fa96c5330C17fc23709f597
 Listening for logs starting at block 11054576...
+```
+
+---
+
+## Seed real on-chain attestations (optional)
+
+The deployed contract starts empty. To make the on-chain events visible on
+Etherscan, set `DEPLOYER_PRIVATE_KEY` (a Sepolia-funded wallet) in `backend/.env`
+and run:
+
+```bash
+cd backend && node seed-onchain.js
 ```
 
 ---

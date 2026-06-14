@@ -1,0 +1,15 @@
+{
+  "schedule": "*/5 * * * *",
+  "claim": "",
+  "evidenceSummary": "",
+  "employeeId": "",
+  "companyEmail": "",
+  "tenureYears": 0,
+  "hrApiUrl": "https://hr-api.example.com/verify",
+  "hrApiKey": "REPLACE_WITH_HR_API_KEY",
+  "aiApiUrl": "https://confidential-ai-dev-preview.cldev.cloud/v1/inference",
+  "aiApiKey": "REPLACE_WITH_CHAINLINK_AI_KEY",
+  "registryAddress": "0x2aa4206aa0b9d2434fa96c5330c17fc23709f597",
+  "chainSelectorName": "ethereum-testnet-sepolia",
+  "gasLimit": "500000"
+}
