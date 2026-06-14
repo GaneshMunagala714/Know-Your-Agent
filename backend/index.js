@@ -1,7 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const crypto = require("crypto");
 const { ethers } = require("ethers");
+const { logVerdictToHedera } = require("./hedera");
 
 const app = express();
 app.use(cors());
@@ -14,6 +16,17 @@ const CONTRACT_ABI = [
   "event InternalReport(uint256 indexed id, uint8 severity, string reason, uint256 timestamp)",
   "event PublicDisclosure(uint256 indexed id, uint8 severity, string reason, uint256 timestamp)",
 ];
+
+// ── Ledger signature verification ────────────────────────────────────────────
+
+function verifyLedgerSignature(message, signature) {
+  try {
+    const signer = ethers.verifyMessage(message, signature);
+    return { valid: true, signer };
+  } catch {
+    return { valid: false, signer: null };
+  }
+}
 
 // ── Employee verification ─────────────────────────────────────────────────────
 
@@ -70,9 +83,17 @@ async function callConfidentialAI(systemPrompt, userPrompt) {
     ? data.output
     : data.choices?.[0]?.message?.content;
 
-  if (!raw) throw new Error("AI returned no content: " + JSON.stringify(data));
+  if (!raw) {
+    console.warn("[AI] No content returned, using deterministic fallback:", data?.error?.message || JSON.stringify(data).slice(0, 80));
+    return null;
+  }
 
-  return JSON.parse(raw.replace(/```json[\s\S]*?```|```/g, "").trim());
+  try {
+    return JSON.parse(raw.replace(/```json[\s\S]*?```|```/g, "").trim());
+  } catch {
+    console.warn("[AI] JSON parse failed, using deterministic fallback");
+    return null;
+  }
 }
 
 // ── AGENT 1: Intake Triage ────────────────────────────────────────────────────
@@ -297,13 +318,27 @@ async function postOnChain(verdict) {
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 app.post("/submit", async (req, res) => {
-  const { claim, evidence_summary, employee_proof } = req.body;
+  const { claim, evidence_summary, employee_proof, ledger_signature, ledger_message } = req.body;
+
+  // ── Ledger gate: reject any submission without a valid hardware signature ──
+  if (!ledger_signature || !ledger_message) {
+    return res.status(401).json({
+      error: "Ledger signature required. Human verification missing.",
+      hint: "Connect your Ledger device and approve the claim before submitting."
+    });
+  }
+  const { valid, signer } = verifyLedgerSignature(ledger_message, ledger_signature);
+  if (!valid) {
+    return res.status(401).json({ error: "Invalid Ledger signature. Submission rejected." });
+  }
+  console.log(`[INCOGNITO] ✓ Ledger signature verified · signer: ${signer}`);
+  // ──────────────────────────────────────────────────────────────────────────
 
   if (!claim?.trim()) return res.status(400).json({ error: "Claim is required" });
   if (!employee_proof?.employee_id) return res.status(400).json({ error: "Employee ID required" });
 
   try {
-    console.log("\n[DeadDrop] ═══ New submission — 4-agent pipeline starting ═══");
+    console.log("\n[INCOGNITO] ═══ New submission — Ledger verified · 4-agent pipeline starting ═══");
 
     // Step 0: Verify employee (identity stays confidential)
     console.log("[DeadDrop] Step 0: Employee verification...");
@@ -328,14 +363,43 @@ app.post("/submit", async (req, res) => {
     // Agent 4: Final verdict synthesis
     const verdict = await runVerdictAgent(triage, analysis, legal);
 
-    // Post on-chain
-    console.log("[DeadDrop] Writing 4-agent attested verdict on-chain...");
+    // Post on-chain (Sepolia)
+    console.log("[INCOGNITO] Writing 4-agent attested verdict on-chain...");
     const onChain = await postOnChain(verdict);
-    console.log(`[DeadDrop] ✓ On-chain: ${onChain.hash}`);
+    console.log(`[INCOGNITO] ✓ Sepolia: ${onChain.hash}`);
+
+    // ── Hedera dual-layer audit ───────────────────────────────────────────
+    const claimHash = crypto.createHash("sha256").update(claim).digest("hex");
+    const hederaVerdict = verdict.credible
+      ? (verdict.severity >= 3 ? "ESCALATE" : "VERIFIED")
+      : "UNVERIFIED";
+
+    let hederaResult = {};
+    try {
+      hederaResult = await logVerdictToHedera({
+        verdict:      hederaVerdict,
+        claimHash,
+        sepoliaTxHash: onChain.hash,
+        violation:    triage.category,
+        severity:     verdict.severity,
+        ledgerSigner: signer,
+        inferenceId:  null,
+      });
+    } catch (hErr) {
+      console.warn("[Hedera] Logging failed (non-fatal):", hErr.message);
+    }
+    // ─────────────────────────────────────────────────────────────────────
 
     res.json({
       success: true,
       agents_run: 4,
+      ledger_verified: true,
+      ledger_signer: signer,
+      hedera_verdict: hederaVerdict,
+      hedera_sequence: hederaResult.hcs_sequence || null,
+      hedera_nft: hederaResult.nft_serial || null,
+      hedera_topic: hederaResult.topic_id || null,
+      hedera_hashscan: hederaResult.hashscan_url || null,
       attestation: {
         ...verdict,
         violation_type: triage.category,
@@ -367,9 +431,10 @@ app.post("/submit", async (req, res) => {
 
 app.get("/health", (_, res) => res.json({
   ok: true,
-  service: "DeadDrop Backend",
+  service: "INCOGNITO Backend",
+  signing: "Ledger DeviceKit (simulated) — ethers.verifyMessage gate on /submit",
   agents: 4,
-  pipeline: "intake-triage → specialist-analysis → legal-assessment → verdict-synthesis",
+  pipeline: "ledger-signature → employee-verify → intake-triage → specialist-analysis → legal-assessment → verdict-synthesis",
   contract: process.env.CONTRACT_ADDRESS || "not configured",
   network: "Sepolia Testnet",
 }));

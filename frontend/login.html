@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INCOGNITO — Secure Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:      #050505;
+  --s1:      #0c0c0c;
+  --s2:      #111111;
+  --b1:      #1e1e1e;
+  --b2:      #2a2a2a;
+  --red:     #e63946;
+  --red-d:   rgba(230,57,70,0.08);
+  --red-b:   rgba(230,57,70,0.18);
+  --green:   #22c55e;
+  --green-d: rgba(34,197,94,0.08);
+  --white:   #f0f0f0;
+  --gray:    #888;
+  --dim:     #444;
+  --sans:    'Space Grotesk', sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+}
+
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg); color: var(--white);
+  font-family: var(--sans); -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 56px; flex-shrink: 0;
+  border-bottom: 1px solid var(--b1);
+  background: rgba(5,5,5,0.95);
+  position: relative; z-index: 10;
+}
+.logo { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.logo-ring { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; }
+.logo-dot  { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 2.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.65);} }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.top-link { font-size: 12px; color: var(--dim); text-decoration: none; transition: color .2s; }
+.top-link:hover { color: var(--gray); }
+.top-chip { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; background: var(--red-d); border: 1px solid var(--red-b); color: var(--red); }
+
+/* ── LAYOUT ── */
+.layout { display: flex; flex: 1; overflow: hidden; }
+
+/* ── LEFT PANEL ── */
+.left {
+  flex: 0 0 52%; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center; padding: 64px 72px;
+  border-right: 1px solid var(--b1);
+}
+.left-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(230,57,70,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(230,57,70,0.03) 0%, transparent 60%);
+}
+.grid-overlay {
+  position: absolute; inset: 0; z-index: 0; opacity: .15;
+  background-image:
+    linear-gradient(var(--b1) 1px, transparent 1px),
+    linear-gradient(90deg, var(--b1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 30% 50%, black 30%, transparent 80%);
+}
+.left-content { position: relative; z-index: 1; }
+.left-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+.eyebrow-line { width: 24px; height: 1px; background: var(--red); }
+.eyebrow-txt  { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--red); }
+.left-heading { font-size: clamp(36px, 4vw, 52px); font-weight: 700; letter-spacing: -.025em; line-height: 1.05; margin-bottom: 20px; }
+.left-heading span { display: block; color: var(--gray); }
+.left-sub { font-size: 14px; color: var(--gray); line-height: 1.75; max-width: 380px; margin-bottom: 52px; }
+
+.guarantees { display: flex; flex-direction: column; gap: 16px; margin-bottom: 52px; }
+.guarantee { display: flex; align-items: flex-start; gap: 14px; }
+.g-icon { width: 32px; height: 32px; border-radius: 6px; background: var(--red-d); border: 1px solid var(--red-b); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.g-icon svg { width: 14px; height: 14px; }
+.g-body {}
+.g-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.g-desc  { font-size: 11px; color: var(--dim); line-height: 1.5; }
+
+.left-footer { display: flex; align-items: center; gap: 10px; }
+.lf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
+.lf-text { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+
+/* ── RIGHT PANEL ── */
+.right {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 40px 56px; overflow-y: auto; background: var(--s1);
+}
+.form-card { width: 100%; max-width: 380px; }
+.fc-head { margin-bottom: 36px; }
+.fc-head h2 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
+.fc-head p  { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 0; background: var(--bg); border: 1px solid var(--b1); border-radius: 6px; padding: 3px; margin-bottom: 28px; }
+.tab {
+  flex: 1; text-align: center; padding: 8px 12px; border-radius: 4px;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  cursor: pointer; transition: background .18s, color .18s;
+  color: var(--dim); border: 1px solid transparent; user-select: none;
+}
+.tab.active { background: var(--s2); color: var(--white); border-color: var(--b1); }
+
+/* ── FORM ── */
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-bottom: 7px; }
+.field input {
+  width: 100%; background: var(--bg); border: 1px solid var(--b1);
+  border-radius: 6px; padding: 12px 14px;
+  color: var(--white); font-family: var(--sans); font-size: 14px;
+  outline: none; transition: border-color .2s, box-shadow .15s;
+}
+.field input:focus { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-d); }
+.field input::placeholder { color: var(--dim); }
+.field-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.remember { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+.remember input[type=checkbox] { width: 14px; height: 14px; accent-color: var(--red); cursor: pointer; }
+.remember span { font-size: 12px; color: var(--gray); }
+.forgot { font-size: 12px; color: var(--dim); text-decoration: none; transition: color .2s; }
+.forgot:hover { color: var(--red); }
+
+.btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; background: var(--red); color: #fff;
+  border: none; border-radius: 6px; padding: 13px;
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s;
+}
+.btn-primary:hover:not(:disabled) { background: #c9313d; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(230,57,70,.22); }
+.btn-primary:disabled { opacity: .35; cursor: not-allowed; }
+.btn-primary .spin { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+.btn-primary.loading .btn-txt { display: none; }
+.btn-primary.loading .spin { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+.divider-line { flex: 1; height: 1px; background: var(--b1); }
+.divider-txt { font-size: 11px; color: var(--dim); }
+
+.btn-secondary {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; background: transparent; border: 1px solid var(--b1);
+  border-radius: 6px; padding: 12px; color: var(--gray);
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.btn-secondary:hover { border-color: var(--b2); color: var(--white); background: var(--b1); }
+
+.fc-footer { margin-top: 24px; text-align: center; }
+.fc-footer p { font-size: 11px; color: var(--dim); line-height: 1.7; }
+.fc-footer a { color: var(--red); text-decoration: none; }
+.fc-footer a:hover { color: #f87171; }
+
+/* ── ERROR / SUCCESS ── */
+.alert { border-radius: 6px; padding: 10px 14px; font-size: 12px; margin-bottom: 16px; display: none; line-height: 1.6; }
+.alert.on { display: block; }
+.alert-err  { background: rgba(230,57,70,.08); border: 1px solid var(--red-b); color: #f87171; }
+.alert-ok   { background: var(--green-d); border: 1px solid rgba(34,197,94,.2); color: var(--green); }
+
+/* ── CLAIM PANEL ── */
+.panel { display: none; }
+.panel.on { display: block; }
+
+.token-note { font-size: 11px; color: var(--dim); background: var(--bg); border: 1px solid var(--b1); border-radius: 6px; padding: 12px 14px; margin-bottom: 16px; line-height: 1.65; }
+
+@media (max-width: 860px) {
+  html, body { overflow: auto; }
+  .layout { flex-direction: column; }
+  .left { flex: none; padding: 40px 28px; border-right: none; border-bottom: 1px solid var(--b1); overflow: visible; }
+  .right { padding: 40px 28px; }
+  .left-heading { font-size: 32px; }
+  .grid-overlay, .left-bg { display: none; }
+  .topbar { padding: 0 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-ring"><div class="logo-dot"></div></div>
+    INCOGNITO
+  </div>
+  <div class="topbar-right">
+    <a class="top-link" href="index.html">Submit a claim →</a>
+    <span class="top-chip">Chainlink TEE</span>
+  </div>
+</div>
+
+<!-- Main layout -->
+<div class="layout">
+
+  <!-- Left panel -->
+  <div class="left">
+    <div class="left-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="left-content">
+      <div class="left-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-txt">Secure Investigator Portal</span>
+      </div>
+      <h1 class="left-heading">Trusted.<span>Protected.</span>On-chain.</h1>
+      <p class="left-sub">Access verified whistleblower disclosures. Every claim passes through four AI agents inside a Chainlink trusted execution environment before it reaches you.</p>
+
+      <div class="guarantees">
+        <div class="guarantee">
+          <div class="g-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#e63946" stroke-width="1.5" stroke-linecap="round">
+              <path d="M8 2 L13 4.5 V8.5 C13 11.2 10.8 13.7 8 14.5 C5.2 13.7 3 11.2 3 8.5 V4.5 Z"/>
+              <path d="M6 8 L7.5 9.5 L10 6.5"/>
+            </svg>
+          </div>
+          <div class="g-body">
+            <div class="g-title">Chainlink TEE Attested</div>
+            <div class="g-desc">Every report is processed inside an SGX enclave. The AI reasoning is cryptographically signed.</div>
+          </div>
+        </div>
+        <div class="guarantee">
+          <div class="g-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#e63946" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="8" cy="6" r="2.5"/>
+              <path d="M3.5 13 C3.5 10.5 5.5 8.5 8 8.5 C10.5 8.5 12.5 10.5 12.5 13"/>
+              <line x1="10.5" y1="2" x2="12.5" y2="4"/>
+              <line x1="14" y1="2.5" x2="12.5" y2="4"/>
+            </svg>
+          </div>
+          <div class="g-body">
+            <div class="g-title">Zero Identity Exposure</div>
+            <div class="g-desc">Whistleblower identity is stripped before any data is written on-chain. Stored as UNKNOWABLE.</div>
+          </div>
+        </div>
+        <div class="guarantee">
+          <div class="g-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#e63946" stroke-width="1.5" stroke-linecap="round">
+              <rect x="2" y="7" width="12" height="7" rx="1.5"/>
+              <path d="M5 7 V5 C5 3.3 6.3 2 8 2 C9.7 2 11 3.3 11 5 V7"/>
+              <circle cx="8" cy="10.5" r="1"/>
+            </svg>
+          </div>
+          <div class="g-body">
+            <div class="g-title">Immutable On-chain Record</div>
+            <div class="g-desc">Attested verdicts are written to Sepolia via <span style="font-family:var(--mono);font-size:10px">0x2aa4…9f597</span>. Tamper-proof.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="left-footer">
+        <div class="lf-dot"></div>
+        <span class="lf-text">ETHGlobal NYC 2026 · Chainlink Track · Sepolia Testnet</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="right">
+    <div class="form-card">
+      <div class="fc-head">
+        <h2>Welcome back</h2>
+        <p>Sign in to access your investigator dashboard or check the status of an anonymous claim.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" id="tab-inv" onclick="switchTab('investigator')">Investigator</div>
+        <div class="tab"        id="tab-rep" onclick="switchTab('reporter')">Reporter</div>
+      </div>
+
+      <!-- Alert -->
+      <div class="alert alert-err" id="alert-err"></div>
+      <div class="alert alert-ok"  id="alert-ok"></div>
+
+      <!-- Investigator panel -->
+      <div class="panel on" id="panel-inv">
+        <div class="field">
+          <label>Email Address</label>
+          <input id="inv-email" type="email" placeholder="you@organization.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input id="inv-pass" type="password" placeholder="••••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+        </div>
+        <div class="field-row">
+          <label class="remember"><input type="checkbox" id="inv-rem" /><span>Remember me</span></label>
+          <a class="forgot" href="#">Forgot password?</a>
+        </div>
+        <button class="btn-primary" id="btn-login" onclick="doLogin()">
+          <span class="btn-txt">Sign in →</span>
+          <span class="spin"></span>
+        </button>
+
+        <div class="divider"><div class="divider-line"></div><span class="divider-txt">or</span><div class="divider-line"></div></div>
+        <a class="btn-secondary" href="index.html">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2L4 5.5v7h3v-4h2v4h3V5.5z"/></svg>
+          Submit an anonymous claim instead
+        </a>
+      </div>
+
+      <!-- Reporter panel -->
+      <div class="panel" id="panel-rep">
+        <div class="token-note">
+          When you submitted your claim, a <strong style="color:var(--white)">unique claim token</strong> was generated. Enter it below to check the current status and any investigator updates.
+        </div>
+        <div class="field">
+          <label>Claim Token</label>
+          <input id="rep-token" type="text" placeholder="INC-XXXX-XXXX-XXXX" style="font-family:var(--mono);letter-spacing:.06em" onkeydown="if(event.key==='Enter')doClaimCheck()" />
+        </div>
+        <button class="btn-primary" id="btn-check" onclick="doClaimCheck()">
+          <span class="btn-txt">Check claim status →</span>
+          <span class="spin"></span>
+        </button>
+
+        <div class="divider"><div class="divider-line"></div><span class="divider-txt">or</span><div class="divider-line"></div></div>
+        <a class="btn-secondary" href="index.html">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+          Submit a new anonymous claim
+        </a>
+      </div>
+
+      <div class="fc-footer">
+        <p>Protected by Chainlink TEE · <a href="https://github.com/GaneshMunagala714/INCOGNITO" target="_blank">Open source ↗</a><br/>All access attempts are logged but not attributed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let activeTab='investigator';
+
+function switchTab(tab) {
+  activeTab=tab;
+  clearAlerts();
+  $('tab-inv').className='tab'+(tab==='investigator'?' active':'');
+  $('tab-rep').className='tab'+(tab==='reporter'?' active':'');
+  $('panel-inv').className='panel'+(tab==='investigator'?' on':'');
+  $('panel-rep').className='panel'+(tab==='reporter'?' on':'');
+}
+
+function clearAlerts() {
+  $('alert-err').className='alert alert-err';
+  $('alert-ok').className='alert alert-ok';
+}
+function showErr(msg) { $('alert-err').textContent=msg; $('alert-err').className='alert alert-err on'; }
+function showOk(msg)  { $('alert-ok').textContent=msg;  $('alert-ok').className='alert alert-ok on';  }
+
+function setLoading(btnId, on) {
+  const b=$(btnId);
+  if(on) b.className='btn-primary loading', b.disabled=true;
+  else   b.className='btn-primary', b.disabled=false;
+}
+
+async function doLogin() {
+  clearAlerts();
+  const email=$('inv-email').value.trim();
+  const pass =$('inv-pass').value;
+  if(!email) return showErr('Please enter your email address.');
+  if(!pass)  return showErr('Please enter your password.');
+  if(!email.includes('@')) return showErr('Enter a valid email address.');
+
+  setLoading('btn-login', true);
+  await new Promise(r=>setTimeout(r,1400));
+
+  // Demo: any credentials work for hackathon
+  if(pass.length < 4) {
+    setLoading('btn-login', false);
+    return showErr('Incorrect credentials. Try again.');
+  }
+
+  showOk('Authenticated. Redirecting to dashboard…');
+  await new Promise(r=>setTimeout(r,900));
+  window.location.href='index.html';
+}
+
+async function doClaimCheck() {
+  clearAlerts();
+  const tok=$('rep-token').value.trim();
+  if(!tok) return showErr('Please enter your claim token.');
+  if(tok.length < 8) return showErr('Invalid claim token format.');
+
+  setLoading('btn-check', true);
+  await new Promise(r=>setTimeout(r,1600));
+  setLoading('btn-check', false);
+
+  showOk('Claim found. Status: Under Investigation — Legal review in progress. No further action required from you.');
+}
+
+// Focus first field on load
+window.addEventListener('load',()=>{ try{$('inv-email').focus();}catch{} });
+</script>
+</body>
+</html>
